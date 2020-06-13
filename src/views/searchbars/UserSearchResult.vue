@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'SideSearchResult'
+  name: 'UserSearchResult'
 }
 </script>
 

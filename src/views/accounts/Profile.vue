@@ -1,13 +1,12 @@
 <template>
   <div>
-    ArticlePopular
+    Profile
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ArticlePopular',
-
+  name: 'Profile'
 }
 </script>
 

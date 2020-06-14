@@ -4,7 +4,10 @@ import VueRouter from 'vue-router'
 import LoginView from '@/views/accounts/LoginView'
 import LogoutView from '@/views/accounts/LogoutView'
 import SignupView from '@/views/accounts/SignupView'
-
+import Profile from '@/views/accounts/Profile.vue'
+import ArticleList from '@/views/articles/ArticleList.vue'
+import ArticlePopular from '@/views/articles/ArticlePopular.vue'
+import MovieList from '@/views/movies/MovieList.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +26,26 @@ Vue.use(VueRouter)
     path: '/signup',
     name: 'Signup',
     component: SignupView
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
+  },
+  {
+    path: '/',
+    name: 'ArticleList',
+    component: ArticleList
+  },
+  {
+    path: '/popular',
+    name: 'ArticlePopular',
+    component: ArticlePopular
+  },
+  {
+    path: '/movies',
+    name: 'MovieList',
+    component: MovieList
   },
 ]
 

@@ -6,17 +6,22 @@ import axios from 'axios'
 
 import router from '@/router'
 import SERVER from '@/api/drf'
+import TMDB from '@/api/tmdb'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     authToken: cookies.get('auth-token'),
-    articles: []
+    articles: [],
+    movies: [],
+    keyword: null,
+    searchedMovies: null,
+    likeActors: null
   },
   getters: {
     isLoggedIn: state => !!state.authToken,
-    config: state => ({ headers: { Authorization: `Token ${state.authToken}`}})
+    config: state => ({ headers: { Authorization: `Token ${state.authToken}`}}),
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -25,6 +30,18 @@ export default new Vuex.Store({
     },
     SET_ARTICLES(state, articles) {
       state.articles = articles
+    },
+    SET_MOVIES(state, movies) {
+      state.movies = movies
+    },
+    SET_KEYWORD(state, keyword) {
+      state.keyword = keyword
+    },
+    SET_SEARCHED_MOVIES(state, movies) {
+      state.searchedMovies = movies
+    },
+    SET_LIKE_ACTORS(state, actors) {
+      state.likeActors = actors
     }
   },
   actions: {
@@ -73,6 +90,33 @@ export default new Vuex.Store({
           router.push({ name: 'ArticleList'})
         })
         .catch(err => console.log(err.response.data))
+    },
+    // Movie 관련
+    fetchMovies({ commit, getters }) {
+      axios.get(SERVER.URL + SERVER.ROUTES.movieList, getters.config)
+        .then(res => {
+          commit('SET_MOVIES', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    movieSearch({ state, commit }) {
+      axios.get(TMDB.URL + TMDB.ROUTES.movieSearch, {
+        params: {
+          api_key: '3c8bd48509d32d366925172366a3081a',
+          language: 'ko-KR',
+          query: state.keyword
+        }
+      })
+        .then(res => {
+          commit('SET_SEARCHED_MOVIES', res.data.results)
+        })
+    },
+    //
+    getLikeActors({ getters, commit }) {
+      axios.get(SERVER.URL + SERVER.ROUTES.actorList, getters.config)
+        .then(res => {
+          commit('SET_LIKE_ACTORS', res.data)
+        })
     }
   },
   modules: {

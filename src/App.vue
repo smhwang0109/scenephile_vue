@@ -37,7 +37,9 @@
         </div>
       </div>
     </nav>
-    <router-view class="container" />
+    <div class="d-flex flex-column align-items-center">
+      <router-view class="container" />
+    </div>
   </div>
 </template>
 
@@ -59,16 +61,13 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
 #nav {
   padding: 30px;
 }
-
 #nav a {
   font-weight: bold;
   color: #2c3e50;
 }
-
 #nav a.router-link-exact-active {
   color: #42b983;
 }

@@ -30,7 +30,7 @@
             <router-link :to="{ name: 'MovieList' }" style="color:white; font-size:20px;"><i class="fas fa-film"></i></router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'Profile' }" style="color:white; font-size:20px;"><i class="fas fa-user"></i></router-link>
+            <router-link :to="{ name: 'MyProfile' }" style="color:white; font-size:20px;"><i class="fas fa-user"></i></router-link>
           </li>
         </ul>
       </div>

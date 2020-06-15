@@ -7,6 +7,7 @@ export default {
     logout: '/rest-auth/logout/',
 
     // accounts
+    userProfile: '/accounts/profile/',
     userSearch: '/accounts/search/',
     
     // actor

@@ -1,18 +1,19 @@
 <template>
   <div class="container w-75">
+    <h1 class="text-center">New Review</h1>
     <div class="form-group">
       <label for="title">Title</label>
       <input v-model="reviewData.title" class="form-control" type="text" placeholder="Default input" id="title">
     </div>
     <div class="form-group">
-      <label for="exampleFormControlTextarea1">Example textarea</label>
-      <textarea v-model="reviewData.content" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      <label for="content">Content</label>
+      <textarea v-model="reviewData.content" class="form-control" id="content" rows="3"></textarea>
     </div>
     <div class="form-group">
       <label for="rank">Rank</label>
       <input v-model="reviewData.rank" type="range" class="custom-range" min="0" max="10" id="rank">
     </div>
-    <button @click="createReview(this.$route.params.movie_id, this.reviewData)" type="submit" class="btn btn-primary">Submit</button>
+    <button @click="create" type="submit" class="btn btn-primary">Submit</button>
   </div>
 </template>
 
@@ -20,9 +21,6 @@
 import { mapActions } from 'vuex'
 export default {
   name: 'ReviewCreate',
-  computed: {
-    
-  },
   data() {
     return {
       reviewData: {
@@ -33,7 +31,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createReview'])
+    ...mapActions(['createReview']),
+    create() {
+      this.createReview(this.reviewData)
+        .then(() => {
+          this.reviewData.title = null
+          this.reviewData.content = null
+          this.reviewData.rank = null
+        })
+    }
   }
 }
 </script>

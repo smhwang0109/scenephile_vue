@@ -38,10 +38,10 @@ export default {
     ...mapState(['selectedMovie'])
   },
   methods: {
-    ...mapActions(['fetchMovie', 'fetchReviews'])
+    ...mapActions(['selectMovie', 'fetchReviews'])
   },
   created() {
-    this.fetchMovie(this.movie_id)
+    this.selectMovie(this.movie_id)
     this.fetchReviews(this.movie_id)
   }
 }

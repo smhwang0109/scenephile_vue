@@ -96,8 +96,5 @@ li {
   list-style: none;
 }
 
-.video-section {
-  height: 300px;
-}
 
 </style>

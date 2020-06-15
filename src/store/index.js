@@ -17,6 +17,7 @@ export default new Vuex.Store({
 
     // actors
     actors: null,
+    selectedActor: null,
 
     // articles
     articles: null,
@@ -45,6 +46,9 @@ export default new Vuex.Store({
     // actors
     SET_ACTORS(state, actors) {
       state.actors = actors
+    },
+    SET_SELECTED_ACTOR(state, actor) {
+      state.selectedActor = actor
     },
     
     // articles
@@ -113,6 +117,13 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err.response.data))
     },
+    selectActor({ commit }, actor_id) {
+      axios.get(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/')
+        .then(res => {
+          commit('SET_SELECTED_ACTOR', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
 
     // articles
     fetchArticles({ getters, commit }, selectFeed) {
@@ -147,7 +158,7 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err.response.data))
     },
-    fetchMovie({ commit }, movie_id) {
+    selectMovie({ commit }, movie_id) {
       axios.get(TMDB.URL + TMDB.ROUTES.movieDetail + `/${movie_id}`, {
         params: {
           api_key: '3c8bd48509d32d366925172366a3081a',
@@ -166,11 +177,11 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err.response.data))
     },
-    createReview({ getters, dispatch }, movie_id, reviewData) {
-      reviewData.rank = Number.isInteger(reviewData.rank)
-      axios.post(SERVER.URL + SERVER.ROUTES.movieList + `${movie_id}/reviews/`, reviewData, getters.config)
+    createReview({ state, getters, dispatch }, reviewData) {
+      reviewData.rank = Number(reviewData.rank)
+      axios.post(SERVER.URL + SERVER.ROUTES.movieList + `${state.selectedMovie.id}/reviews/`, reviewData, getters.config)
         .then(() => {
-          dispatch('fetchReviews', movie_id)
+          dispatch('fetchReviews', state.selectedMovie.id)
         })
         .catch(err => console.log(err.response.data))
       },

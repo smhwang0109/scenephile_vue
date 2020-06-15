@@ -15,6 +15,9 @@ export default new Vuex.Store({
     // rest-auth
     authToken: cookies.get('auth-token'),
 
+    // accounts
+    selectedUser: null,
+
     // actors
     actors: null,
     selectedActor: null,
@@ -46,6 +49,11 @@ export default new Vuex.Store({
       cookies.set('auth-token', token)
     },
     
+    // accounts
+    SET_SELECTED_USER(state, user) {
+      state.selectedUser = user
+    },
+
     // actors
     SET_ACTORS(state, actors) {
       state.actors = actors
@@ -121,6 +129,22 @@ export default new Vuex.Store({
         .catch(err => console.log(err.response.data))
     },
 
+    // accounts
+    selectSelf({ getters, commit }) {
+      axios.get(SERVER.URL + SERVER.ROUTES.userProfile, getters.config)
+        .then(res => {
+          commit('SET_SELECTED_USER', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    selectUser({ getters, commit }, userId ) {
+      axios.get(SERVER.URL + SERVER.ROUTES.userProfile + `${userId}/`, getters.config)
+        .then(res => {
+          commit('SET_SELECTED_USER', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+
     // actors
     fetchActors({ getters, commit }, selectList) {
       axios.get(SERVER.URL + SERVER.ROUTES.actorList + selectList, getters.config)
@@ -151,7 +175,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err.response.data))
     },
     likeActor({ getters, commit }, actor_id) {
-      axios.post(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/like/', getters.config)
+      axios.post(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/like/', null, getters.config)
         .then(res => {
           commit('SET_ACTOR_LIKE', res.data)
         })

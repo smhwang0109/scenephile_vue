@@ -7,7 +7,8 @@ import LogoutView from '@/views/accounts/LogoutView'
 import SignupView from '@/views/accounts/SignupView'
 
 // accounts
-import Profile from '@/views/accounts/Profile'
+import MyProfile from '@/views/accounts/MyProfile'
+import UserProfile from '@/views/accounts/UserProfile'
 
 // actors
 import ActorSelect from '@/views/actors/ActorSelect'
@@ -46,9 +47,14 @@ Vue.use(VueRouter)
 
     // accounts
     {
-      path: '/profile',
-      name: 'Profile',
-      component: Profile
+      path: '/myprofile',
+      name: 'MyProfile',
+      component: MyProfile
+    },
+    {
+      path: '/profile/:user_id',
+      name: 'UserProfile',
+      component: UserProfile
     },
 
     // actors

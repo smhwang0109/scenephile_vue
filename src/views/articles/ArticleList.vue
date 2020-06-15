@@ -6,7 +6,7 @@
         <hr>
         <div class="row">
           <div class="col-12 card px-0" v-for="article in articles" :key="article.id">
-            <div class="container customcard flex-column">
+            <div class="customcard flex-column">
               <div class="customcard justify-content-between py-2">
                 <div>
                   {{ article.user.username }}

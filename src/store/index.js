@@ -18,6 +18,9 @@ export default new Vuex.Store({
     // actors
     actors: null,
     selectedActor: null,
+    actorMovies: null,
+    actorArticles: null,
+    actorLike: null,
 
     // articles
     articles: null,
@@ -49,6 +52,15 @@ export default new Vuex.Store({
     },
     SET_SELECTED_ACTOR(state, actor) {
       state.selectedActor = actor
+    },
+    SET_ACTOR_MOVIES(state, movies) {
+      state.actorMovies = movies
+    },
+    SET_ACTOR_ARTICLES(state, articles) {
+      state.actorArticles = articles
+    },
+    SET_ACTOR_LIKE(state, data) {
+      state.actorLike = data
     },
     
     // articles
@@ -123,6 +135,32 @@ export default new Vuex.Store({
           commit('SET_SELECTED_ACTOR', res.data)
         })
         .catch(err => console.log(err.response.data))
+    },
+    fetchActorMovies({ commit }, actor_id) {
+      axios.get(SERVER.URL + SERVER.ROUTES.movieList + actor_id + '/')
+        .then(res => {
+          commit('SET_ACTOR_MOVIES', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    fetchActorArticles({ commit }, actor_id) {
+      axios.get(SERVER.URL + SERVER.ROUTES.articleList + actor_id + '/')
+        .then(res => {
+          commit('SET_ACTOR_ARTICLES', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    likeActor({ getters, commit }, actor_id) {
+      axios.post(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/like/', getters.config)
+        .then(res => {
+          commit('SET_ACTOR_LIKE', res.data)
+        })
+    },
+    getLikeActorData({ getters, commit }, actor_id) {
+      axios.get(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/like/', getters.config)
+        .then(res => {
+          commit('SET_ACTOR_LIKE', res.data)
+        })
     },
 
     // articles

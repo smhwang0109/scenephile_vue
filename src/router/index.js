@@ -12,6 +12,8 @@ import Profile from '@/views/accounts/Profile'
 // actors
 import ActorSelect from '@/views/actors/ActorSelect'
 import ActorProfile from '@/views/actors/ActorProfile'
+import ActorMovies from '@/views/actors/ActorMovies'
+import ActorArticles from '@/views/actors/ActorArticles'
 
 // articles
 import ArticleList from '@/views/articles/ArticleList'
@@ -58,7 +60,19 @@ Vue.use(VueRouter)
     {
       path: '/actors/:actor_id',
       name: 'ActorProfile',
-      component: ActorProfile
+      component: ActorProfile,
+      children: [
+        {
+          path: 'movies',
+          name: 'ActorMovies',
+          component: ActorMovies
+        },
+        {
+          path: 'articles',
+          name: 'ActorArticles',
+          component: ActorArticles
+        }
+      ]
     },
 
     // articles

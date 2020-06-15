@@ -15,6 +15,7 @@ import ActorSelect from '@/views/actors/ActorSelect'
 // articles
 import ArticleList from '@/views/articles/ArticleList'
 import ArticlePopular from '@/views/articles/ArticlePopular'
+import ArticleCreate from '@/views/articles/ArticleCreate'
 
 // movies
 import MovieList from '@/views/movies/MovieList'
@@ -61,9 +62,14 @@ Vue.use(VueRouter)
       component: ArticleList
     },
     {
-      path: '/popular',
+      path: '/articles/popular',
       name: 'ArticlePopular',
       component: ArticlePopular
+    },
+    {
+      path: '/articles/create/:actor_id',
+      name: 'ArticleCreate',
+      component: ArticleCreate
     },
 
     // movies

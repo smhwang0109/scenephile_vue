@@ -1,5 +1,5 @@
 <template>
-  <div class="temp">
+  <div>
     <nav class="navbar navbar-dark bg-dark">
       <div class="container">
         <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;">Scenephile</router-link>
@@ -72,9 +72,5 @@ export default {
   display: flex;
   flex-direction: row;
   list-style: none;
-}
-
-.temp {
-  background-color: #c7c7c7;
 }
 </style>

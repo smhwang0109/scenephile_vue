@@ -11,13 +11,24 @@
        </p>
      </div>
    </div>
+   <hr>
+   <ReviewCreate />
+   <hr>
+   <ReviewList />
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import ReviewList from '@/views/movies/reviews/ReviewList.vue'
+import ReviewCreate from '@/views/movies/reviews/ReviewCreate.vue'
+
 export default {
   name: 'MovieDetail',
+  components: {
+    ReviewList,
+    ReviewCreate
+  },
   data() {
     return {
       movie_id: this.$route.params.movie_id,
@@ -27,10 +38,11 @@ export default {
     ...mapState(['selectedMovie'])
   },
   methods: {
-    ...mapActions(['fetchMovie'])
+    ...mapActions(['fetchMovie', 'fetchReviews'])
   },
   created() {
     this.fetchMovie(this.movie_id)
+    this.fetchReviews(this.movie_id)
   }
 }
 </script>

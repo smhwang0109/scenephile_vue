@@ -16,7 +16,9 @@
                 </div>
               </div>
               <div class="customcard video-section">
-                {{ article.video_path}}
+                <div class="embed-responsive embed-responsive-1by1">
+                  <iframe class="embed-responsive-item" :src="`https://www.youtube.com/embed/${article.video_path}`" allowfullscreen></iframe>
+                </div>
               </div>
               <div class="customcard d-flex flex-column">
                 <div>

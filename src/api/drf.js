@@ -18,7 +18,6 @@ export default {
     articlePopularList: '/articles/populars/',
 
     // movies
-    movieList: '/movies/',
-    
+    movieList: '/movies/',    
   }
 }

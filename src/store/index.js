@@ -16,7 +16,7 @@ export default new Vuex.Store({
     authToken: cookies.get('auth-token'),
 
     // actors
-    likeActors: null,
+    actors: null,
 
     // articles
     articles: null,
@@ -24,6 +24,7 @@ export default new Vuex.Store({
     // movies
     movies: null,
     selectedMovie: null,
+    reviews: null,
     
     // search
     keyword: null,
@@ -42,8 +43,8 @@ export default new Vuex.Store({
     },
     
     // actors
-    SET_LIKE_ACTORS(state, actors) {
-      state.likeActors = actors
+    SET_ACTORS(state, actors) {
+      state.actors = actors
     },
     
     // articles
@@ -57,6 +58,9 @@ export default new Vuex.Store({
     },
     SET_SELECTED_MOVIE(state, movie) {
       state.selectedMovie = movie
+    },
+    SET_REVIEWS(state, reviews) {
+      state.reviews = reviews
     },
 
     // search
@@ -105,7 +109,7 @@ export default new Vuex.Store({
     fetchActors({ getters, commit }, selectList) {
       axios.get(SERVER.URL + SERVER.ROUTES.actorList + selectList, getters.config)
         .then(res => {
-          commit('SET_LIKE_ACTORS', res.data)
+          commit('SET_ACTORS', res.data)
         })
         .catch(err => console.log(err.response.data))
     },
@@ -120,11 +124,19 @@ export default new Vuex.Store({
     },
 
     createArticle({ getters }, articleData) {
-      axios.post(SERVER.URL + SERVER.ROUTES.createArticle, articleData, getters.config)
-        .then(() => {
-          router.push({ name: 'ArticleList'})
-        })
-        .catch(err => console.log(err.response.data))
+      // console.log(articleData.video_path.startsWith('https://www.youtube.com/watch?v='))
+      console.log(articleData.video_path)
+      if (articleData.video_path.startsWith('https://www.youtube.com/watch?v=')) {
+        articleData.video_path = articleData.video_path.slice(32)
+        axios.post(SERVER.URL + SERVER.ROUTES.articleList, articleData, getters.config)
+          .then(() => {
+            router.push({ name: 'ArticleList'})
+          })
+          .catch(err => console.log(err.response.data))
+      }
+      else {
+        router.push({ name: 'ArticleCreate', params:{ actor_id: articleData.actorId } })
+      }
     },
     
     // movies
@@ -143,11 +155,25 @@ export default new Vuex.Store({
         }
       })
         .then(res => {
-          commit('SET_SELECTED_MOVIE', null)
           commit('SET_SELECTED_MOVIE', res.data)
         })
         .catch(err => console.log(err.response.data))
     },
+    fetchReviews({ getters, commit }, movie_id) {
+      axios.get(SERVER.URL + SERVER.ROUTES.movieList + `${movie_id}/reviews/`, getters.config)
+        .then(res => {
+          commit('SET_REVIEWS', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    createReview({ getters, dispatch }, movie_id, reviewData) {
+      reviewData.rank = Number.isInteger(reviewData.rank)
+      axios.post(SERVER.URL + SERVER.ROUTES.movieList + `${movie_id}/reviews/`, reviewData, getters.config)
+        .then(() => {
+          dispatch('fetchReviews', movie_id)
+        })
+        .catch(err => console.log(err.response.data))
+      },
 
     // search
     searchMovies({ commit }, keyword) {

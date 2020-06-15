@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-2 px-0 mr-1 profile-container" v-for="actor in likeActors" :key="actor.id">
+    <div class="col-2 px-0 mr-1 profile-container" v-for="actor in actors" :key="actor.id">
       <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
       <div class="overlay rounded-circle">
         <div class="text">{{ actor.name }}</div>
@@ -19,7 +19,7 @@ export default {
     selectList: String,
   },
   computed: {
-    ...mapState(['likeActors']),    
+    ...mapState(['actors']),    
   },
   methods: {
     ...mapActions(['fetchActors']),

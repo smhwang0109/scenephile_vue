@@ -1,14 +1,22 @@
 <template>
   <div>
-   <div class="movie-info row">
-     <img class="col-4 rounded" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${selectedMovie.poster_path}`" :alt="`${selectedMovie.original_title} poster`">
-     <div class="col-8">
-       <h1>{{ selectedMovie.original_title }}</h1>
+   <div class="movie-info row" v-if="selectedMovie">
+     <img class="col-lg-4 col-sm-12 rounded" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${selectedMovie.poster_path}`" :alt="`${selectedMovie.original_title} poster`">
+     <div class="col-lg-8 col-sm-12">
+       <div>
+        <h1>{{ selectedMovie.original_title }}</h1>
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="badge badge-pill badge-info mx-1" v-for="genre in selectedMovie.genres" :key="genre.id">
+              {{ genre.name }}
+            </span>
+          </div>
+          <button type="button" class="btn btn-secondary">{{ selectedMovie.release_date }}</button>
+        </div>
+       </div>
+       <hr>
        <p>{{ selectedMovie.overview }}</p>
-       <p>{{ selectedMovie.release_date }}</p>
-       <p v-for="genre in selectedMovie.genres" :key="genre.id">
-         {{ genre.name }}
-       </p>
+       
      </div>
    </div>
    <hr>

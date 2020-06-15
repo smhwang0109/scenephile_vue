@@ -19,9 +19,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import UserSearch from '@/components/UserSearch.vue'
 
 export default {
   name: 'ActorSelect',
+  components: {
+    UserSearch
+  },
   computed: {
     ...mapState(['actors']),    
   },

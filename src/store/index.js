@@ -175,7 +175,10 @@ export default new Vuex.Store({
         .then(res => {
           commit('SET_REVIEWS', res.data)
         })
-        .catch(err => console.log(err.response.data))
+        .catch(err => {
+          console.log(err.response.data)
+          commit('SET_REVIEWS', [])
+        })
     },
     createReview({ state, getters, dispatch }, reviewData) {
       reviewData.rank = Number(reviewData.rank)
@@ -184,7 +187,37 @@ export default new Vuex.Store({
           dispatch('fetchReviews', state.selectedMovie.id)
         })
         .catch(err => console.log(err.response.data))
-      },
+    },
+    updateReview({ state, getters, dispatch }, reviewUpdateData) {
+      reviewUpdateData.formData.rank = Number(reviewUpdateData.formData.rank)
+      axios.put(SERVER.URL + SERVER.ROUTES.movieList + `${state.selectedMovie.id}/reviews/${reviewUpdateData.reviewId}/`, reviewUpdateData.formData, getters.config)
+        .then(() => {
+          dispatch('fetchReviews', state.selectedMovie.id)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    deleteReview({ state, getters, dispatch }, reviewId) {
+      axios.delete(SERVER.URL + SERVER.ROUTES.movieList + `${state.selectedMovie.id}/reviews/${reviewId}/`, getters.config)
+        .then(() => {
+          dispatch('fetchReviews', state.selectedMovie.id)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    createReviewComment({ state, getters, dispatch }, reviewCommentData) {
+      axios.post(SERVER.URL + SERVER.ROUTES.movieList + `${state.selectedMovie.id}/reviews/${reviewCommentData.reviewId}/comments/`, reviewCommentData.formData, getters.config)
+        .then(() => {
+          dispatch('fetchReviews', state.selectedMovie.id)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    deleteReviewComment({ state, getters, dispatch }, reviewCommentDeleteData) {
+      axios.delete(SERVER.URL + SERVER.ROUTES.movieList + `${state.selectedMovie.id}/reviews/${reviewCommentDeleteData.reviewId}/comments/${reviewCommentDeleteData.commentId}/`, getters.config)
+        .then(() => {
+          dispatch('fetchReviews', state.selectedMovie.id)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+
 
     // search
     searchMovies({ commit }, keyword) {

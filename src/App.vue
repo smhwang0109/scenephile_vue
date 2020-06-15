@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="temp">
     <nav class="navbar navbar-dark bg-dark">
       <div class="container">
         <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;">Scenephile</router-link>
@@ -22,6 +22,9 @@
           </li>
           <li>
             <router-link :to="{ name: 'ArticlePopular' }" style="color:white; font-size:20px;"><i class="fab fa-hotjar"></i></router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'ActorSelect' }" style="color:white; font-size:20px;"><i class="fas fa-plus-circle"></i></router-link>
           </li>
           <li>
             <router-link :to="{ name: 'MovieList' }" style="color:white; font-size:20px;"><i class="fas fa-film"></i></router-link>
@@ -69,5 +72,9 @@ export default {
   display: flex;
   flex-direction: row;
   list-style: none;
+}
+
+.temp {
+  background-color: #c7c7c7;
 }
 </style>

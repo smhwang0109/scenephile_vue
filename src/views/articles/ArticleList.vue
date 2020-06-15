@@ -1,42 +1,43 @@
 <template>
-  <div class="d-flex flex-row">
-    <div class="col-7">
-      <ActorList/>
-      <ul class="m-0 p-0">
-        <li v-for="article in articles" :key="`article_${article.id}`">
-          <div class="container customcard flex-column">
-            <div class="customcard justify-content-between py-2">
-              <div>
-                {{ article.user.username }}
+  <div class="my-3">
+    <div class="article-feed row justify-content-around">
+      <div class="col-8">
+        <ActorList :selectList="selectFeed"/>
+        <hr>
+        <div class="row">
+          <div class="col-12 card px-0" v-for="article in articles" :key="article.id">
+            <div class="container customcard flex-column">
+              <div class="customcard justify-content-between py-2">
+                <div>
+                  {{ article.user.username }}
+                </div>
+                <div>
+                  :
+                </div>
               </div>
-              <div>
-                :
+              <div class="customcard video-section">
+                {{ article.video_path}}
               </div>
-            </div>
-            <div class="customcard video-section">
-              {{ article.video_path}}
-            </div>
-            <div class="customcard d-flex flex-column">
-              <div>
-                <i class="far fa-heart mr-2"></i>
-                <i class="far fa-comments"></i>
+              <div class="customcard d-flex flex-column">
+                <div>
+                  <i class="far fa-heart mr-2"></i>
+                  <i class="far fa-comments"></i>
+                </div>
+                <div>
+                  {{ article.content }}
+                </div>
+                <ul>
+                  <li v-for="comment in changeStringToObject(article.comments)" :key="comment.pk">                  
+                    {{ comment.fields['content'] }}
+                    <br>
+                  </li>
+                </ul>
               </div>
-              <div>
-                {{ article.content }}
-              </div>
-              <ul>
-                <li v-for="comment in changeStringToObject(article.comments)" :key="`comment_${comment.pk}`">                  
-                  {{ comment.fields['content'] }}
-                  <br>
-                </li>
-              </ul>
             </div>
           </div>
-        </li>
-      </ul>
-    </div>
-    <div class="col-5">
-      <UserSearch/>
+        </div>
+      </div>
+      <UserSearch class="col-4" />
     </div>
   </div>
 </template>
@@ -49,6 +50,11 @@ import UserSearch from '@/components/UserSearch'
 
 export default {
   name: 'ArticleList',
+  data() {
+    return {
+      selectFeed: ''
+    }
+  },
   components: {
     ActorList,
     UserSearch,
@@ -61,10 +67,10 @@ export default {
     changeStringToObject(S) {
       const O = JSON.parse(S);
       return O
-    }
+    },
   },
   created() {
-    this.fetchArticles()
+    this.fetchArticles(this.selectFeed)
   }
 
 

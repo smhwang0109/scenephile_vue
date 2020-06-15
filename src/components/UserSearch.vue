@@ -1,13 +1,15 @@
 <template>
   <div>
-    <input class="search-input mr-1 border border-secondary rounded" v-model="keyword" @keypress.enter="fetchUsers(keyword)">
-    <button class="search-button btn btn-secondary" @click="fetchUsers(keyword)">검색</button>
+    <input @keydown.enter="searchUsers(keyword)" v-model="keyword" id="movie-searchbar" class="w-100" type="text" placeholder="친구를 검색해보세요">
     <hr>
-    <ul>
-      <li v-for="search_user in search_users" :key="search_user.id">        
-        {{ search_user.username }}
-      </li>
-    </ul>
+    <div class="d-flex flex-column align-items-center" v-if="searchedUsers">
+      <div class="row mb-3 bg-light mx-0" v-for="searchedUser in searchedUsers" :key="searchedUser.id">
+        <!-- <img class="col-4 px-0" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`" :alt="`${movie.original_title} poster`"> -->
+        <div class="col-8 px-0 d-flex flex-column justify-content-center align-items-center">
+          <p>{{ searchedUser.username }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -22,25 +24,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['search_users']),    
+    ...mapState(['searchedUsers']),    
   },
   methods: {
-    ...mapActions(['fetchUsers']),
+    ...mapActions(['searchUsers']),
   },
 }
 </script>
 
 <style scoped>
-li {
-  list-style: none;
-}
 
-.search-input {
-  width: 70%;
-}
-
-.search-button {
-  width: 20%;
-  padding: 0.2rem 0.5rem;
-}
 </style>

@@ -11,11 +11,11 @@ export default {
     
     // actor
     actorList: '/actors/',
+    actorPopularList: '/actors/populars/',
 
     // articles
-    createArticle: '/articles/create/',
     articleList: '/articles/',
-    articleCommentList: '/articles/:article_id/comments/',
+    articlePopularList: '/articles/populars/',
 
     // movies
     movieList: '/movies/',

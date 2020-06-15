@@ -23,6 +23,7 @@ export default new Vuex.Store({
 
     // movies
     movies: null,
+    selectedMovie: null,
     
     // search
     keyword: null,
@@ -54,13 +55,16 @@ export default new Vuex.Store({
     SET_MOVIES(state, movies) {
       state.movies = movies
     },
+    SET_SELECTED_MOVIE(state, movie) {
+      state.selectedMovie = movie
+    },
 
     // search
     SET_SEARCHED_MOVIES(state, movies) {
       state.searchedMovies = movies
     },
     SET_SEARCH_USERS(state, users) {
-      state.search_users = users
+      state.searchedUsers = users
     }
   },
   actions: {
@@ -98,8 +102,8 @@ export default new Vuex.Store({
     },
 
     // actors
-    fetchActors({ getters, commit }) {
-      axios.get(SERVER.URL + SERVER.ROUTES.actorList, getters.config)
+    fetchActors({ getters, commit }, selectList) {
+      axios.get(SERVER.URL + SERVER.ROUTES.actorList + selectList, getters.config)
         .then(res => {
           commit('SET_LIKE_ACTORS', res.data)
         })
@@ -107,8 +111,8 @@ export default new Vuex.Store({
     },
 
     // articles
-    fetchArticles({ getters, commit }) {
-      axios.get(SERVER.URL + SERVER.ROUTES.articleList, getters.config)
+    fetchArticles({ getters, commit }, selectFeed) {
+      axios.get(SERVER.URL + SERVER.ROUTES.articleList + selectFeed, getters.config)
         .then(res => {
           commit('SET_ARTICLES', res.data)
         })
@@ -131,7 +135,19 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err.response.data))
     },
-
+    fetchMovie({ commit }, movie_id) {
+      axios.get(TMDB.URL + TMDB.ROUTES.movieDetail + `/${movie_id}`, {
+        params: {
+          api_key: '3c8bd48509d32d366925172366a3081a',
+          language: 'ko-KR'
+        }
+      })
+        .then(res => {
+          commit('SET_SELECTED_MOVIE', null)
+          commit('SET_SELECTED_MOVIE', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
 
     // search
     searchMovies({ commit }, keyword) {
@@ -155,6 +171,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err.response.data))
     },
 
+    
   },
   modules: {
   }

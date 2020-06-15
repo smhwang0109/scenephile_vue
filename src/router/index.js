@@ -1,53 +1,83 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Test from '@/views/Test.vue'
+
+// rest-auth
 import LoginView from '@/views/accounts/LoginView'
 import LogoutView from '@/views/accounts/LogoutView'
 import SignupView from '@/views/accounts/SignupView'
-import Profile from '@/views/accounts/Profile.vue'
-import ArticleList from '@/views/articles/ArticleList.vue'
-import ArticlePopular from '@/views/articles/ArticlePopular.vue'
-import MovieList from '@/views/movies/MovieList.vue'
+
+// accounts
+import Profile from '@/views/accounts/Profile'
+
+// actors
+import ActorSelect from '@/views/actors/ActorSelect'
+
+// articles
+import ArticleList from '@/views/articles/ArticleList'
+import ArticlePopular from '@/views/articles/ArticlePopular'
+
+// movies
+import MovieList from '@/views/movies/MovieList'
+import MovieDetail from '@/views/movies/MovieDetail'
 
 Vue.use(VueRouter)
 
   const routes = [
-  {
-    path: '/login',
-    name: 'Login',
-    component: LoginView
-  },
-  {
-    path: '/logout',
-    name: 'Logout',
-    component: LogoutView
-  },
-  {
-    path: '/signup',
-    name: 'Signup',
-    component: SignupView
-  },
-  {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile
-  },
-  {
-    path: '/',
-    name: 'ArticleList',
-    component: ArticleList
-  },
-  {
-    path: '/popular',
-    name: 'ArticlePopular',
-    component: ArticlePopular
-  },
-  {
-    path: '/movies',
-    name: 'MovieList',
-    component: MovieList
-  },
-]
+    // rest-auth
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginView
+    },
+    {
+      path: '/logout',
+      name: 'Logout',
+      component: LogoutView
+    },
+    {
+      path: '/signup',
+      name: 'Signup',
+      component: SignupView
+    },
+
+    // accounts
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
+    },
+
+    // actors
+    {
+      path: '/actorselect',
+      name: 'ActorSelect',
+      component: ActorSelect
+    },
+
+    // articles
+    {
+      path: '/',
+      name: 'ArticleList',
+      component: ArticleList
+    },
+    {
+      path: '/popular',
+      name: 'ArticlePopular',
+      component: ArticlePopular
+    },
+
+    // movies
+    {
+      path: '/movies',
+      name: 'MovieList',
+      component: MovieList
+    },
+    {
+      path: '/movies/:movie_id',
+      name: 'MovieDetail',
+      component: MovieDetail
+    }
+  ]
 
 const router = new VueRouter({
   mode: 'history',

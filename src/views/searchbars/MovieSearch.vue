@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input @keydown.enter="search" v-model="keyword" id="movie-searchbar" class="w-100" type="text" placeholder="영화를 검색해보세요">
+    <input @keydown.enter="searchMovies(keyword)" v-model="keyword" id="movie-searchbar" class="w-100" type="text" placeholder="영화를 검색해보세요">
     <hr>
     <div class="d-flex flex-column align-items-center" v-if="searchedMovies">
       <div class="row mb-3 bg-light mx-0" v-for="movie in searchedMovies" :key="movie.id">
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MovieSearch',
   data() {
@@ -27,12 +27,7 @@ export default {
     ...mapState(['searchedMovies'])
   },
   methods: {
-    ...mapActions(['movieSearch']),
-    ...mapMutations(['SET_KEYWORD']),
-    search() {
-      this.SET_KEYWORD(this.keyword)
-      this.movieSearch()
-    }
+    ...mapActions(['searchMovies']),
   }
 }
 </script>

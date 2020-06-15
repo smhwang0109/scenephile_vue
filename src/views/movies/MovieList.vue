@@ -4,11 +4,7 @@
     <hr>
     <div class="movie-feed row justify-content-around">
       <div class="col-8">
-        <div class="col-12 row">
-          <div class="col-1 card px-0 mr-1" v-for="actor in likeActors" :key="actor.id">
-            <img class="card-img-top img-fluid" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
-          </div>
-        </div>
+        <ActorList />
         <hr>
         <div class="row">
           <div class="col-lg-4 col-sm-12 card px-0" v-for="movie in movies" :key="`movie_${movie.id}`">
@@ -26,21 +22,22 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import ActorList from '@/components/ActorList.vue'
 import MovieSearch from '@/views/searchbars/MovieSearch.vue'
 export default {
   name: 'MovieList',
   components: {
-    MovieSearch
+    MovieSearch,
+    ActorList
   },
   computed: {
     ...mapState(['movies', 'likeActors'])
   },
   methods: {
-    ...mapActions(['fetchMovies', 'getLikeActors'])
+    ...mapActions(['fetchMovies'])
   },
   created() {
     this.fetchMovies()
-    this.getLikeActors()
   }
 }
 </script>

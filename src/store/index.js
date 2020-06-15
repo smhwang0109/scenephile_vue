@@ -12,39 +12,59 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // rest-auth
     authToken: cookies.get('auth-token'),
-    articles: [],
-    movies: [],
+
+    // actors
+    likeActors: null,
+
+    // articles
+    articles: null,
+
+    // movies
+    movies: null,
+    
+    // search
     keyword: null,
+    searchedUsers: null,
     searchedMovies: null,
-    likeActors: null
   },
   getters: {
     isLoggedIn: state => !!state.authToken,
     config: state => ({ headers: { Authorization: `Token ${state.authToken}`}}),
   },
   mutations: {
+    // rest-auth
     SET_TOKEN(state, token) {
       state.authToken = token
       cookies.set('auth-token', token)
     },
+    
+    // actors
+    SET_LIKE_ACTORS(state, actors) {
+      state.likeActors = actors
+    },
+    
+    // articles
     SET_ARTICLES(state, articles) {
       state.articles = articles
     },
+
+    // movies
     SET_MOVIES(state, movies) {
       state.movies = movies
     },
-    SET_KEYWORD(state, keyword) {
-      state.keyword = keyword
-    },
+
+    // search
     SET_SEARCHED_MOVIES(state, movies) {
       state.searchedMovies = movies
     },
-    SET_LIKE_ACTORS(state, actors) {
-      state.likeActors = actors
+    SET_SEARCH_USERS(state, users) {
+      state.search_users = users
     }
   },
   actions: {
+    // rest-auth
     postAuthData({ commit }, info) {
       axios.post(SERVER.URL + info.location, info.data)
         .then(res => {
@@ -76,14 +96,25 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err.response.data))
     },
-    //
-    fetchArticles({ commit }) {
-      axios.get(SERVER.URL + SERVER.ROUTES.articleList)
+
+    // actors
+    fetchActors({ getters, commit }) {
+      axios.get(SERVER.URL + SERVER.ROUTES.actorList, getters.config)
+        .then(res => {
+          commit('SET_LIKE_ACTORS', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+
+    // articles
+    fetchArticles({ getters, commit }) {
+      axios.get(SERVER.URL + SERVER.ROUTES.articleList, getters.config)
         .then(res => {
           commit('SET_ARTICLES', res.data)
         })
         .catch(err => console.log(err.response.data))
     },
+
     createArticle({ getters }, articleData) {
       axios.post(SERVER.URL + SERVER.ROUTES.createArticle, articleData, getters.config)
         .then(() => {
@@ -91,33 +122,39 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err.response.data))
     },
-    // Movie 관련
-    fetchMovies({ commit, getters }) {
+    
+    // movies
+    fetchMovies({ getters, commit }) {
       axios.get(SERVER.URL + SERVER.ROUTES.movieList, getters.config)
         .then(res => {
           commit('SET_MOVIES', res.data)
         })
         .catch(err => console.log(err.response.data))
     },
-    movieSearch({ state, commit }) {
+
+
+    // search
+    searchMovies({ commit }, keyword) {
       axios.get(TMDB.URL + TMDB.ROUTES.movieSearch, {
         params: {
           api_key: '3c8bd48509d32d366925172366a3081a',
           language: 'ko-KR',
-          query: state.keyword
+          query: keyword
         }
       })
         .then(res => {
           commit('SET_SEARCHED_MOVIES', res.data.results)
         })
     },
-    //
-    getLikeActors({ getters, commit }) {
-      axios.get(SERVER.URL + SERVER.ROUTES.actorList, getters.config)
+
+    searchUsers({ commit }, keyword) {
+      axios.get(SERVER.URL + SERVER.ROUTES.userSearch + keyword + '/')
         .then(res => {
-          commit('SET_LIKE_ACTORS', res.data)
+          commit('SET_SEARCH_USERS', res.data)
         })
-    }
+        .catch(err => console.log(err.response.data))
+    },
+
   },
   modules: {
   }

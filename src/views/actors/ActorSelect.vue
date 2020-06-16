@@ -1,17 +1,14 @@
 <template>
-  <div class="my-3">
-    <div class="actor-select row justify-content-around">
-      <p>게시글을 작성할 배우를 골라주세요!</p>
-      <div class="col-12">
-        <div class="row">
-          <router-link :to="{ name: 'ArticleCreate', params:{ actor_id: actor.id } }" class="col-2 px-0 mr-1 profile-container" v-for="actor in actors" :key="actor.id">
-            <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
-            <div class="overlay rounded-circle">
-              <div class="text">{{ actor.name }}</div>
-            </div>
-          </router-link>
+  <div class="my-4">
+    <h3 class="text-center">게시글을 작성할 배우를 골라주세요!</h3>
+    <hr>
+    <div class="row customcard p-3">
+      <router-link :to="{ name: 'ArticleCreate', params:{ actor_id: actor.id, actor: actor } }" class="col-2 px-0 mr-1 profile-container" v-for="actor in actors" :key="actor.id">
+        <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
+        <div class="overlay rounded-circle">
+          <div class="text">{{ actor.name }}</div>
         </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>

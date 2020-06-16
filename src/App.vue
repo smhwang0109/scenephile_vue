@@ -29,8 +29,8 @@
           <li>
             <router-link :to="{ name: 'MovieList' }" style="color:white; font-size:20px;"><i class="fas fa-film"></i></router-link>
           </li>
-          <li>
-            <router-link :to="{ name: 'MyProfile' }" style="color:white; font-size:20px;"><i class="fas fa-user"></i></router-link>
+          <li v-if="myAccount">
+            <router-link :to="`/accounts/${myAccount.id}/`" style="color:white; font-size:20px;"><i class="fas fa-user"></i></router-link>
           </li>
         </ul>
       </div>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   name: 'App',
   data() {
@@ -49,9 +49,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLoggedIn'])
+    ...mapGetters(['isLoggedIn']),
+    ...mapState(['myAccount'])
   },
   methods: {
+    ...mapActions(['getMyAccount']),
     setNull() {
       console.log('null')
       this.keyword = null
@@ -61,6 +63,9 @@ export default {
       this.$router.push({ name: 'SearchResult', params: { keyword: this.keyword }})
         .then(this.setNull())
     },
+  },
+  created() {
+    this.getMyAccount()
   }
 }
 </script>
@@ -88,5 +93,17 @@ export default {
   display: flex;
   flex-direction: row;
   list-style: none;
+}
+
+.customcard {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  padding: 0.5rem;
 }
 </style>

@@ -7,8 +7,10 @@ export default {
     logout: '/rest-auth/logout/',
 
     // accounts
-    userProfile: '/accounts/profile/',
+    myAccount: '/accounts/myaccount/',
+    profile: '/accounts/',
     userSearch: '/accounts/search/',
+    follow: '/accounts/follow/',
     
     // actor
     actorList: '/actors/',

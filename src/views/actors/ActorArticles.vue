@@ -1,13 +1,13 @@
 <template>
   <div class="row">
     <div class="col-4 card px-0" v-for="article in actorArticles" :key="article.id">
-      <div class="customcard flex-column">
-        <div class="customcard video-section">
-          <div class="embed-responsive embed-responsive-1by1">
+      <div class="flex-column">
+        <div class="video-section">
+          <div class="embed-responsive embed-responsive-1by1 rounded">
             <iframe class="embed-responsive-item" :src="`https://www.youtube.com/embed/${article.video_path}`" allowfullscreen></iframe>
           </div>
         </div>
-        <div class="customcard d-flex flex-column">
+        <div class="d-flex flex-column">
           <div>
             <i class="far fa-heart mr-2"></i>
             <i class="far fa-comments"></i>

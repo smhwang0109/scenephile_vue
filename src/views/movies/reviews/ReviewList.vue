@@ -9,7 +9,6 @@
             <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" :data-target="'#collapse'+review.id" aria-expanded="false" :aria-controls="'collapse'+review.id">
               <div class="d-flex justify-content-between align-items-center">
                 <span>{{ review.title }}</span>
-                <span>{{ review.user.username }}</span>
               </div>
             </button>
           </h2>
@@ -21,7 +20,11 @@
             <div>
               <div class="d-flex justify-content-between">
                 <div>
-                  <p><span class="badge badge-pill badge-warning">{{ review.rank }}</span> | <span>{{ review.created_at }}</span></p>                  
+                  <p>
+                    <router-link :to="`/accounts/${review.user.id}`"><span>{{ review.user.username }}</span></router-link> |
+                    <span>{{ review.created_at.slice(0,10) }}</span> |
+                    <span class="badge badge-pill badge-warning">{{ review.rank }}</span>
+                  </p>                  
                 </div>
                 <div>
                   <button @click="initUpdate(review)" type="button" class="btn btn-sm btn-outline-info mb-2" data-toggle="modal" :data-target="'#update_review'+review.id">Update</button>              
@@ -72,7 +75,8 @@
               <div class="d-flex flex-row justify-content-between" v-for="comment in changeStringToObject(review.comments)" :key="comment.pk">
                 <p>{{ comment.fields['content'] }}</p>
                 <div>
-                  <span class="mr-2">{{ comment.fields.username }} | {{ comment.fields.created_at }}</span>
+                  <router-link :to="`/accounts/${comment.fields.user }`"><span>{{ comment.fields.username }}</span></router-link> |
+                  <span>{{ comment.fields.created_at.slice(0,10) }} | </span>
                   <button @click="deleteRC(review.id, Number(comment.pk))" type="button" class="btn btn-sm btn-outline-danger mb-2">Delete</button>
                 </div>
               </div>

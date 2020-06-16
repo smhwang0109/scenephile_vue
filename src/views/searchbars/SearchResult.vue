@@ -2,7 +2,7 @@
   <div class="my-3">
     <div class="article-feed row justify-content-around">
       <div class="col-8">
-        <ActorList :selectList="''"/>
+        <ActorSearch :keyword="keyword"/>
         <hr>
         <div class="row">
           <div class="col-12 card px-0" v-for="article in searchedArticles" :key="article.id">
@@ -47,7 +47,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 
-import ActorList from '@/components/ActorList'
+import ActorSearch from '@/components/ActorSearch'
 import UserSearch from '@/components/UserSearch'
 
 export default {
@@ -58,7 +58,7 @@ export default {
     }
   },
   components: {
-    ActorList,
+    ActorSearch,
     UserSearch,
   },
   computed: {

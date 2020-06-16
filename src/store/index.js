@@ -16,6 +16,7 @@ export default new Vuex.Store({
     authToken: cookies.get('auth-token'),
 
     // accounts
+    myAccount: null,
     selectedUser: null,
 
     // actors
@@ -27,6 +28,7 @@ export default new Vuex.Store({
 
     // articles
     articles: null,
+    isArticleLike: null,
 
     // movies
     movies: null,
@@ -35,6 +37,7 @@ export default new Vuex.Store({
     
     // search
     keyword: null,
+    searchedActors: null,
     searchedArticles: null,
     searchedUsers: null,
     searchedMovies: null,
@@ -51,6 +54,10 @@ export default new Vuex.Store({
     },
     
     // accounts
+    SET_MY_ACCOUNT(state, user) {
+      state.myAccount = user
+    },
+
     SET_SELECTED_USER(state, user) {
       state.selectedUser = user
     },
@@ -71,10 +78,16 @@ export default new Vuex.Store({
     SET_ACTOR_LIKE(state, data) {
       state.actorLike = data
     },
-    
+    SET_SEARCHED_ACTORS(state, actors) {
+      state.searchedActors = actors
+    },
+
     // articles
     SET_ARTICLES(state, articles) {
       state.articles = articles
+    },
+    SET_IS_ARTICLE_LIKE(state, data) {
+      state.isArticleLike = data
     },
 
     // movies
@@ -134,17 +147,24 @@ export default new Vuex.Store({
     },
 
     // accounts
-    selectSelf({ getters, commit }) {
-      axios.get(SERVER.URL + SERVER.ROUTES.userProfile, getters.config)
+    getMyAccount({ getters, commit }) {
+      axios.get(SERVER.URL + SERVER.ROUTES.myAccount, getters.config)
+        .then(res => {
+          commit('SET_MY_ACCOUNT', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    selectUser({ getters, commit }, userId ) {
+      axios.get(SERVER.URL + SERVER.ROUTES.profile + `${userId}/`, getters.config)
         .then(res => {
           commit('SET_SELECTED_USER', res.data)
         })
         .catch(err => console.log(err.response.data))
     },
-    selectUser({ getters, commit }, userId ) {
-      axios.get(SERVER.URL + SERVER.ROUTES.userProfile + `${userId}/`, getters.config)
-        .then(res => {
-          commit('SET_SELECTED_USER', res.data)
+    followUser({ getters, dispatch }, userId) {
+      axios.post(SERVER.URL + SERVER.ROUTES.follow + `${userId}/`, null, getters.config)
+        .then(() => {
+          dispatch('selectUser', userId)
         })
         .catch(err => console.log(err.response.data))
     },
@@ -157,10 +177,12 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err.response.data))
     },
-    selectActor({ commit }, actor_id) {
-      axios.get(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/')
+    selectActor({ getters, commit }, actor_id) {
+      commit('SET_SELECTED_ACTOR', null)
+      axios.get(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/', getters.config)
         .then(res => {
           commit('SET_SELECTED_ACTOR', res.data)
+          console.log(res)
         })
         .catch(err => console.log(err.response.data))
     },
@@ -190,6 +212,26 @@ export default new Vuex.Store({
           commit('SET_ACTOR_LIKE', res.data)
         })
     },
+    searchActors({ commit }, keyword) {
+      axios.get(TMDB.URL + TMDB.ROUTES.actorSearch, {
+        params: {
+          query: keyword,
+          api_key: '3c8bd48509d32d366925172366a3081a',
+          language: 'ko-KR'
+        }
+      })
+        .then(res => {
+          commit('SET_SEARCHED_ACTORS', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+      },
+
+
+
+
+
+
+
 
     // articles
     fetchArticles({ getters, commit }, selectFeed) {
@@ -201,8 +243,6 @@ export default new Vuex.Store({
     },
 
     createArticle({ getters }, articleData) {
-      // console.log(articleData.video_path.startsWith('https://www.youtube.com/watch?v='))
-      console.log(articleData.video_path)
       if (articleData.video_path.startsWith('https://www.youtube.com/watch?v=')) {
         articleData.video_path = articleData.video_path.slice(32)
         axios.post(SERVER.URL + SERVER.ROUTES.articleList, articleData, getters.config)
@@ -215,7 +255,20 @@ export default new Vuex.Store({
         router.push({ name: 'ArticleCreate', params:{ actor_id: articleData.actorId } })
       }
     },
+    likeArticle({ getters, commit, dispatch }, data) {
+      axios.post(SERVER.URL + SERVER.ROUTES.articleList + data.article_pk + '/like/', null, getters.config)
+        .then(() => {
+          commit('SET_IS_ARTICLE_LIKE', !data.isArticleLike)
+          dispatch('fetchArticles', data.selectFeed)
+        })
+    },
     
+
+
+
+
+
+
     // movies
     fetchMovies({ getters, commit }) {
       axios.get(SERVER.URL + SERVER.ROUTES.movieList, getters.config)

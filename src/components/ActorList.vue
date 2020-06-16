@@ -1,13 +1,12 @@
 <template>
   <div class="row">
-    <router-link :to="{ name: 'ActorProfile', params: { actor_id: actor.id, actor: actor }}" class="col-2 px-0 mr-1 profile-container" v-for="actor in actors" :key="actor.id">
+    <router-link :to="{ name: 'ActorProfile', params: { actor_id: actor.id }}" class="col-2 px-0 mr-1 profile-container" v-for="actor in actors" :key="actor.id">
       <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
       <div class="overlay rounded-circle">
         <div class="text">{{ actor.name }}</div>
       </div>
     </router-link>
   </div>
-
 </template>
 
 <script>

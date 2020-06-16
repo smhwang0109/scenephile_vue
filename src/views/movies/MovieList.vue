@@ -2,7 +2,7 @@
   <div class="my-3">
     <div class="movie-feed row justify-content-around">
       <div class="col-8">
-        <ActorList :selectList="''"/>
+        <ActorList class="customcard p-3" :selectList="''"/>
         <hr>
         <div class="row">
           <router-link :to="{ name: 'MovieDetail', params: {movie_id: movie.id }}" class="card col-lg-4 col-sm-12 px-0 poster-container" v-for="movie in movies" :key="movie.id">

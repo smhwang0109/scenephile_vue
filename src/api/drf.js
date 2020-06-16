@@ -17,6 +17,7 @@ export default {
     // articles
     articleList: '/articles/',
     articlePopularList: '/articles/populars/',
+    articleSearch: '/articles/search/',
 
     // movies
     movieList: '/movies/',    

@@ -25,6 +25,9 @@ import ArticleCreate from '@/views/articles/ArticleCreate'
 import MovieList from '@/views/movies/MovieList'
 import MovieDetail from '@/views/movies/MovieDetail'
 
+// search
+import SearchResult from '@/views/searchbars/SearchResult'
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -69,7 +72,7 @@ Vue.use(VueRouter)
       component: ActorProfile,
       children: [
         {
-          path: 'movies',
+          path: '',
           name: 'ActorMovies',
           component: ActorMovies
         },
@@ -108,6 +111,13 @@ Vue.use(VueRouter)
       path: '/movies/:movie_id',
       name: 'MovieDetail',
       component: MovieDetail
+    },
+
+    // searchbar
+    {
+      path: '/search/:keyword',
+      name: 'SearchResult',
+      component: SearchResult
     }
   ]
 

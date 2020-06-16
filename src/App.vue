@@ -3,10 +3,10 @@
     <nav class="navbar navbar-dark bg-dark">
       <div class="container">
         <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;">Scenephile</router-link>
-        <form class="d-none d-lg-inline form-inline offset-1 col-5 col-xl-4">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <div class="d-none d-lg-inline form-inline offset-1 col-5 col-xl-4">
+          <input v-model="keyword" @keyup.enter="getKeyword()" class="form-control mr-sm-2" placeholder="Search">
+          <button @click="getKeyword()" class="btn btn-outline-primary my-2 my-sm-0">Search</button>
+        </div>
         <ul class="navbar-nav mt-2 offset-xl-1 col-6 col-lg-3 d-flex felx-row justify-content-around">
           <li v-if="!isLoggedIn">
             <router-link :to="{ name: 'Login' }" style="color:white;">Login</router-link>
@@ -43,8 +43,24 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'App',
+  data() {
+    return {
+      keyword : null
+    }
+  },
   computed: {
     ...mapGetters(['isLoggedIn'])
+  },
+  methods: {
+    setNull() {
+      console.log('null')
+      this.keyword = null
+    },
+    getKeyword() {
+      console.log(this.keyword)
+      this.$router.push({ name: 'SearchResult', params: { keyword: this.keyword }})
+        .then(this.setNull())
+    },
   }
 }
 </script>

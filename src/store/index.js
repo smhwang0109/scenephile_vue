@@ -35,6 +35,7 @@ export default new Vuex.Store({
     
     // search
     keyword: null,
+    searchedArticles: null,
     searchedUsers: null,
     searchedMovies: null,
   },
@@ -88,6 +89,9 @@ export default new Vuex.Store({
     },
 
     // search
+    SET_SEARCHED_ARTICLES(state, articles) {
+      state.searchedArticles = articles
+    },
     SET_SEARCHED_MOVIES(state, movies) {
       state.searchedMovies = movies
     },
@@ -282,6 +286,15 @@ export default new Vuex.Store({
 
 
     // search
+    searchArticles({ commit }, keyword) {
+      console.log(keyword)
+      axios.get(SERVER.URL + SERVER.ROUTES.articleSearch + keyword + '/')
+      .then(res => {
+          commit('SET_SEARCHED_ARTICLES', res.data)
+        })
+        .catch(err => console.log(err))
+    },
+
     searchMovies({ commit }, keyword) {
       axios.get(TMDB.URL + TMDB.ROUTES.movieSearch, {
         params: {

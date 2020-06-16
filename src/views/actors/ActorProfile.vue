@@ -62,6 +62,7 @@ export default {
   created() {
     this.checkActor()
     this.getLikeActorData(this.$route.params.actor_id)
+    this.$router.push(`/actors/${this.actor.id}`)
   }
 
 }

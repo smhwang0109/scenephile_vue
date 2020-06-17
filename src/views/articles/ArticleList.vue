@@ -1,5 +1,5 @@
 <template>
-  <div class="my-3">
+  <div class="my-3 mb-5">
     <div class="article-feed row justify-content-around">
       <div class="col-8">
         <ActorList class="customcard p-3 rounded" :selectList="selectFeed"/>
@@ -7,9 +7,13 @@
         <div class="row">
           <div class="col-12 card px-0" v-for="article in articles" :key="article.id">
             <div class="flex-column">
-              <div class="justify-content-between py-2 customcard">
-                <div>
-                  <router-link :to="`/accounts/${article.user.id }`"><span>{{ article.user.username }}</span></router-link>
+              <div class="py-2 customcard justify-content-between">
+                <div class="d-flex flex-row justify-content-start">
+                  <img class="img-fluid rounded-circle ml-1 border user-image" src="@/assets/anonymoususer.png" :alt="`${article.user.username} profile`">
+                  <div class="d-flex justify-content-start align-items-center ml-2">
+                    <router-link :to="`/accounts/${article.user.id }`"><span> {{ article.user.username }}</span></router-link>
+                    <span class="ml-2">| {{ article.actor.name }}</span>
+                  </div>
                 </div>
                 <div>
                   :
@@ -39,8 +43,8 @@
                 </ul>
                 <hr>
                 <div class="row">
-                  <input @keypress.enter="createComment(article.id)" v-model="commentData.content" class="form-control offset-1 col-8 mr-2" type="text" placeholder="댓글 작성">
-                  <button @click="createComment(article.id)" type="submit" class="mb-3 col-2 btn btn-outline-primary">게시</button>
+                  <input @keypress.enter="createComment(article.id)" v-model="commentData.content" class="form-control offset-1 col-8 mr-2" type="text" placeholder="댓글을 작성해주세요.">
+                  <button @click="createComment(article.id)" type="submit" class="mb-3 col-2 btn btn-outline-primary">댓글 작성</button>
                 </div>
               </div>
             </div>
@@ -131,5 +135,4 @@ li {
 .border-bottom {
   border-bottom: 1px solid gainsboro;
 }
-
 </style>

@@ -33,7 +33,7 @@ Vue.use(VueRouter)
   const routes = [
     // rest-auth
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       component: LoginView
     },
@@ -86,7 +86,7 @@ Vue.use(VueRouter)
 
     // articles
     {
-      path: '/',
+      path: '/articles',
       name: 'ArticleList',
       component: ArticleList
     },

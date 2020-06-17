@@ -4,7 +4,7 @@
       <h3 class="text-center mb-0">좋아하는 배우를 선택해주세요!</h3>
     </div>
     <hr>
-    <div class="row customcard p-3 d-flex justify-content-center">
+    <div class="row customcard p-3 d-flex justify-content-around">
       <div @click="pushActor(actor)" class="col-2 px-0 mr-1 profile-container" v-for="actor in actors.slice(0, 20)" :key="actor.id">
         <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
         <div v-show="isChecked(actor)" class="overlay-default rounded-circle">
@@ -15,7 +15,7 @@
         </div>
       </div>
       <div @click="sendLikeActor" :to="{ name:'ArticleList' }" class="col-12 d-flex justify-content-center pt-5">
-        <div class="col-3 btn btn-outline-primary">다 선택했어요!</div>
+        <div class="col-3 btn btn-primary">다 선택했어요!</div>
       </div>
     </div>
   </div>

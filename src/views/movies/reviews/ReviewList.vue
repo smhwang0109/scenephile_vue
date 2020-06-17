@@ -1,6 +1,6 @@
 <template>
   <div class="container w-75 mb-5" v-if="reviews">
-    <h1 class="text-center">Reviews</h1>
+    <h1 class="text-center">리뷰</h1>
     <div class="accordion" id="accordionExample">
       <div class="card" v-for="review in reviews" :key="review.id">
         <!-- review 제목 -->
@@ -27,37 +27,37 @@
                   </p>                  
                 </div>
                 <div>
-                  <button @click="initUpdate(review)" type="button" class="btn btn-sm btn-outline-info mb-2" data-toggle="modal" :data-target="'#update_review'+review.id">Update</button>              
-                  <button @click="deleteR(review.id)" type="button" class="btn btn-sm btn-outline-danger mb-2 ml-2">Delete</button>
+                  <button @click="initUpdate(review)" type="button" class="btn btn-sm btn-outline-info mb-2" data-toggle="modal" :data-target="'#update_review'+review.id">수정</button>              
+                  <button @click="deleteR(review.id)" type="button" class="btn btn-sm btn-outline-danger mb-2 ml-2">삭제</button>
                   
                   <!-- update modal -->
                   <div class="modal fade" :id="'update_review'+review.id" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="staticBackdropLabel">Review Update</h5>
+                          <h5 class="modal-title" id="staticBackdropLabel">리뷰 수정</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
                           <div class="form-group">
-                            <label :for="'update_title'+review.id">Title</label>
+                            <label :for="'update_title'+review.id">제목</label>
                             <input v-model="reviewUpdateData.formData.title" class="form-control" type="text" :id="'update_title'+review.id">
                           </div>
                           <div class="form-group">
-                            <label :for="'update_content'+review.id">Content</label>
+                            <label :for="'update_content'+review.id">내용</label>
                             <textarea v-model="reviewUpdateData.formData.content" class="form-control" :id="'update_content'+review.id" rows="3"></textarea>
                           </div>
                           <div class="form-group">
-                            <label :for="'update_rank'+review.id">Rank</label> |
+                            <label :for="'update_rank'+review.id">평점</label> |
                             <span class="badge badge-pill badge-warning">{{ reviewUpdateData.formData.rank }}</span>
                             <input v-model="reviewUpdateData.formData.rank" type="range" class="custom-range" min="0" max="10" :id="'update_rank'+review.id">
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button @click="updateR(review.id)" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                          <button @click="updateR(review.id)" type="button" class="btn btn-primary" data-dismiss="modal">리뷰 수정</button>
                         </div>
                       </div>
                     </div>
@@ -68,7 +68,7 @@
               <p>{{ review.content }}</p>
             </div>
             <hr>
-            <h5>Comments</h5>
+            <h5>댓글</h5>
             <ReviewCommentCreate :reviewId="review.id" />
             <!-- comments list -->
             <div v-if="review.comments!=='[]'">

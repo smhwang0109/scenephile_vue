@@ -25,7 +25,7 @@
             <textarea class="form-control" v-model="articleData.content" id="content" cols="30" rows="10"></textarea>
           </div>
           <div class="d-flex justify-content-end my-1">
-            <button type="submit" class="btn btn-primary" @click="createArticle(articleData)">Submit</button>
+            <button type="submit" class="btn btn-primary" @click="createArticle(articleData)">게시하기</button>
           </div>
         </div>
       </div>

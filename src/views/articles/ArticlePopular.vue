@@ -8,8 +8,12 @@
           <div class="col-12 card px-0" v-for="article in articles" :key="article.id">
             <div class="flex-column">
               <div class="justify-content-between py-2 customcard">
-                <div>
-                  <router-link :to="`/accounts/${article.user.id }`"><span>{{ article.user.username }}</span></router-link>
+                <div class="d-flex flex-row justify-content-start">
+                  <img class="img-fluid rounded-circle ml-1 border user-image" src="@/assets/anonymoususer.png" :alt="`${article.user.username} profile`">
+                  <div class="d-flex justify-content-start align-items-center ml-2">
+                    <router-link :to="`/accounts/${article.user.id }`"><span> {{ article.user.username }} | </span></router-link>
+                    <span class="ml-2">{{ article.actor.name }}</span>
+                  </div>
                 </div>
                 <div>
                   :

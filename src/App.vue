@@ -1,36 +1,33 @@
 <template>
-  <div>
-    <nav class="navbar navbar-dark bg-dark">
+  <div id="app">
+    <nav class="navbar navbar-dark bg-color">
       <div class="container">
-        <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;"><img :src="`./assets/fanplace_logo2.png`" alt="logo"></router-link>
+        <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;"><img class="img-fluid" src="./assets/logo.png" alt="logo"></router-link>
         <div class="d-none d-lg-inline form-inline offset-1 col-5 col-xl-4">
-          <input v-model="keyword" @keyup.enter="getKeyword()" class="form-control mr-sm-2" placeholder="Search">
-          <button @click="getKeyword()" class="btn btn-outline-primary my-2 my-sm-0">Search</button>
+          <input v-model="keyword" @keyup.enter="getKeyword()" class="input-color form-control mr-sm-2" placeholder="좋아하는 배우 검색">
+          <button @click="getKeyword()" class="btn btn-outline-primary my-2 my-sm-0">검색</button>
         </div>
         <ul class="navbar-nav mt-2 offset-xl-1 col-6 col-lg-3 d-flex felx-row justify-content-around">
-          <li v-if="!isLoggedIn">
-            <router-link :to="{ name: 'Login' }" style="color:white;">Login</router-link>
-          </li>
-          <li v-if="!isLoggedIn">
-            <router-link :to="{ name: 'Signup' }" style="color:white;">Signup</router-link>
-          </li>
-          <li v-if="isLoggedIn">
-            <router-link :to="{ name: 'Logout' }" style="color:white;">Logout</router-link>
+          <li v-if="isLoggedIn" class="d-none">
+            <router-link :to="{ name: 'Logout' }" class="nav-font">Logout</router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'ArticleList' }" style="color:white; font-size:20px;"><i class="fas fa-home"></i></router-link>
+            <router-link :to="{ name: 'ArticleList' }" class="nav-font"><i class="fas fa-home"></i></router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'ArticlePopular' }" style="color:white; font-size:20px;"><i class="fab fa-hotjar"></i></router-link>
+            <router-link :to="{ name: 'ArticlePopular' }" class="nav-font"><i class="fab fa-hotjar"></i></router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'ActorSelect' }" style="color:white; font-size:20px;"><i class="fas fa-plus-circle"></i></router-link>
+            <router-link :to="{ name: 'ActorSelect' }" class="nav-font"><i class="fas fa-plus-circle"></i></router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'MovieList' }" style="color:white; font-size:20px;"><i class="fas fa-film"></i></router-link>
+            <router-link :to="{ name: 'MovieList' }" class="nav-font"><i class="fas fa-film"></i></router-link>
           </li>
           <li v-if="myAccount">
-            <router-link :to="`/accounts/${myAccount.id}/`" style="color:white; font-size:20px;"><i class="fas fa-user"></i></router-link>
+            <router-link :to="`/accounts/${myAccount.id}/`" class="nav-font"><i class="fas fa-user"></i></router-link>
+          </li>
+          <li v-else>
+            <router-link :to="{ name: 'Login' }" class="nav-font"><i class="fas fa-user"></i></router-link>
           </li>
         </ul>
       </div>
@@ -50,7 +47,7 @@ export default {
   },
   computed: {
     ...mapGetters(['isLoggedIn']),
-    ...mapState(['myAccount'])
+    ...mapState(['myAccount']),
   },
   methods: {
     ...mapActions(['getMyAccount']),
@@ -58,6 +55,9 @@ export default {
       this.keyword = null
     },
     getKeyword() {
+      if (this.keyword === '박') {
+        this.keyword = 'park'
+      }
       this.$router.push({ name: 'SearchResult', params: { keyword: this.keyword }})
         .then(this.setNull())
     },
@@ -69,11 +69,15 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans:400');
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap&subset=korean');
+
+@font-face { font-family: 'BMJUA'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff'); font-weight: normal; font-style: normal; }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'BMJUA';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
 }
 #nav {
@@ -83,8 +87,27 @@ export default {
   font-weight: bold;
   color: #2c3e50;
 }
-#nav a.router-link-exact-active {
-  color: #42b983;
+
+
+.btn-outline-primary {
+  color: #F6AF86;
+  border-color: #F6AF86;
+}
+
+.btn-outline-primary:hover {
+  background-color: #F6AF86;
+  border-color: #F6AF86;
+}
+
+.bg-color {
+  background-color: #ffffffcc!important;
+}
+.nav-font {
+  color: #575858;
+  font-size: 20px;
+}
+.nav-font:hover {
+  color: #F6AF86;
 }
 
 .navbar-nav{
@@ -103,5 +126,13 @@ export default {
   border: 1px solid rgba(0,0,0,.125);
   border-radius: .25rem;
   padding: 0.5rem;
+}
+
+.user-image {
+  width: 2.5em;
+}
+
+a:hover {
+  text-decoration: none;
 }
 </style>

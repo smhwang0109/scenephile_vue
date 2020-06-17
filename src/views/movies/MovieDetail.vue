@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="my-3">
    <div class="movie-info row" v-if="selectedMovie">
      <img class="col-lg-4 col-sm-12 rounded" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${selectedMovie.poster_path}`" :alt="`${selectedMovie.original_title} poster`">
      <div class="col-lg-8 col-sm-12">

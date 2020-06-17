@@ -18,6 +18,7 @@ export default new Vuex.Store({
     // accounts
     myAccount: null,
     selectedUser: null,
+    userArticles: null,
 
     // actors
     actors: null,
@@ -60,6 +61,10 @@ export default new Vuex.Store({
 
     SET_SELECTED_USER(state, user) {
       state.selectedUser = user
+    },
+
+    SET_USER_ARTICLES(state, articles) {
+      state.userArticles = articles
     },
 
     // actors
@@ -118,21 +123,31 @@ export default new Vuex.Store({
       axios.post(SERVER.URL + info.location, info.data)
         .then(res => {
           commit('SET_TOKEN', res.data.key)
-          router.push({ name: 'ArticleList' })
+          router.push({ name: info.to })
         })
         .catch(err => console.log(err.response.data))
     },
     signup({ dispatch }, signupData) {
       const info = {
         data: signupData,
-        location: SERVER.ROUTES.signup
+        location: SERVER.ROUTES.signup,
+        to: 'SignupActorSelect'
       }
       dispatch('postAuthData', info)
     },
+    signupFetchActors({ commit }, selectList) {
+      axios.get(SERVER.URL + SERVER.ROUTES.actorList + selectList)
+        .then(res => {
+          commit('SET_ACTORS', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+
     login({ dispatch }, loginData) {
       const info = {
         data: loginData,
-        location: SERVER.ROUTES.login
+        location: SERVER.ROUTES.login,
+        to: 'ArticleList'
       }
       dispatch('postAuthData', info)
     },
@@ -168,6 +183,20 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err.response.data))
     },
+    fetchUserArticles({ commit }, user_id) {
+      console.log(user_id)
+      axios.get(SERVER.URL + SERVER.ROUTES.userArticle + user_id + '/')
+        .then(res => {
+          commit('SET_USER_ARTICLES', res.data)
+        })
+        .catch(err => console.log(err.response.data))
+    },
+
+
+
+
+
+
 
     // actors
     fetchActors({ getters, commit }, selectList) {
@@ -194,7 +223,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err.response.data))
     },
     fetchActorArticles({ commit }, actor_id) {
-      axios.get(SERVER.URL + SERVER.ROUTES.articleList + actor_id + '/')
+      axios.get(SERVER.URL + SERVER.ROUTES.actorArticle + actor_id + '/')
         .then(res => {
           commit('SET_ACTOR_ARTICLES', res.data)
         })
@@ -202,12 +231,6 @@ export default new Vuex.Store({
     },
     likeActor({ getters, commit }, actor_id) {
       axios.post(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/like/', null, getters.config)
-        .then(res => {
-          commit('SET_ACTOR_LIKE', res.data)
-        })
-    },
-    getLikeActorData({ getters, commit }, actor_id) {
-      axios.get(SERVER.URL + SERVER.ROUTES.actorList + actor_id + '/like/', getters.config)
         .then(res => {
           commit('SET_ACTOR_LIKE', res.data)
         })
@@ -259,7 +282,13 @@ export default new Vuex.Store({
       axios.post(SERVER.URL + SERVER.ROUTES.articleList + data.article_pk + '/like/', null, getters.config)
         .then(() => {
           commit('SET_IS_ARTICLE_LIKE', !data.isArticleLike)
-          dispatch('fetchArticles', data.selectFeed)
+          if (data.where == 'ArticleList') {
+            dispatch('fetchArticles', data.selectFeed)
+          } else if (data.where == 'ActorProfile') {
+            dispatch('fetchActorArticles', data.actor_id)
+          } else {
+            dispatch('fetchUserArticles', data.user_id)
+          }
         })
     },
     

@@ -20,10 +20,10 @@
       </div>
     </div>
     <div class="d-flex justify-content-center my-3">
-      <router-link type="button" class="col-5 text-center btn btn-primary mx-3" :to="{ name: 'ActorMovies', params: {actor_id: actor_id}}">
+      <router-link type="button" @click="selectRM" id="related_movies" class="col-5 text-center btn btn-secondary mx-3" :to="{ name: 'ActorMovies', params: {actor_id: actor_id}}">
         출연작
       </router-link>
-      <router-link type="button" class="col-5 text-center btn btn-secondary mx-3" :to="{ name: 'ActorArticles', params: {actor_id: actor_id}}">
+      <router-link type="button" @click="selectRA" id="related_articles" class="col-5 text-center btn btn-secondary mx-3" :to="{ name: 'ActorArticles', params: {actor_id: actor_id}}">
         게시물
       </router-link>
     </div>
@@ -35,6 +35,9 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+
+const RM = document.querySelector('#related_movies')
+const RA = document.querySelector('#related_articles')
 
 export default {
   name: 'ActorProfile',
@@ -51,6 +54,18 @@ export default {
     clickLike() {
       this.likeActor(this.selectedActor.id)
       this.selectedActor.is_like = !this.selectedActor.is_like
+    },
+    selectRM() {
+      RM.classList.remove('btn-secondary')
+      RM.classList.add('btn-primary')
+      RA.classList.remove('btn-primary')
+      RA.classList.add('btn-secondary')
+    },
+    selectRA() {
+      RA.classList.remove('btn-secondary')
+      RA.classList.add('btn-primary')
+      RM.classList.remove('btn-primary')
+      RM.classList.add('btn-secondary')
     }
   },
   created() {

@@ -1,6 +1,8 @@
 <template>
   <div class="my-4">
-    <h3 class="text-center">게시글을 작성할 배우를 골라주세요!</h3>
+    <div class="row customcard d-flex justify-content-center">
+      <h3 class="text-center mb-0">어떤 배우의 게시물을 작성하고 싶으신가요?</h3>
+    </div>
     <hr>
     <div class="row customcard p-3">
       <router-link :to="{ name: 'ArticleCreate', params:{ actor_id: actor.id, actor: actor } }" class="col-2 px-0 mr-1 profile-container" v-for="actor in actors" :key="actor.id">

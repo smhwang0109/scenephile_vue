@@ -29,11 +29,10 @@
                 <div class="border-bottom mt-2 pb-2">
                   {{ article.content }}
                 </div>
-                
                 <ul>
                   <i class="far fa-comments"></i>
                   <li v-for="comment in changeStringToObject(article.comments)" :key="comment.pk">                  
-                    {{ comment.fields['content'] }}
+                    <router-link :to="`/accounts/${article.user.id }`">{{ comment.fields['username'] }}</router-link> {{ comment.fields['content'] }} 
                     <i @click="deleteComment(article.id, comment.pk)" class="delete-btn far fa-trash-alt"></i>
                     <br>
                   </li>
@@ -89,7 +88,7 @@ export default {
       }
     },
     clickLikeArticle(isArticleLike, article_pk) {
-      const data = {isArticleLike: isArticleLike, article_pk: article_pk, selectFeed: ''}
+      const data = {isArticleLike: isArticleLike, article_pk: article_pk, selectFeed: this.selectFeed, where: 'ArticleList'}
       this.likeArticle(data)
     },
     changeStringToObject(S) {
@@ -99,6 +98,7 @@ export default {
     createComment(article_id) {
       axios.post(SERVER.URL + SERVER.ROUTES.articleList + article_id + '/comments/', this.commentData , this.config)
         .then(() => {
+          this.commentData.content = null
           this.fetchArticles(this.selectFeed)
         })
     },

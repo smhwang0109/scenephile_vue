@@ -13,7 +13,7 @@
       <label for="password2">password-confirm</label>
       <input class="form-control" v-model="signupData.password2" id="password2" type="password">
     </div>
-    <button @click="signup(signupData)" class="btn btn-primary">Signup</button>
+    <div @click="signup(signupData)" class="btn btn-primary">Signup</div>
   </div>
 </template>
 

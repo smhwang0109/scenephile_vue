@@ -30,20 +30,21 @@
     <hr>
     <div class="container rounded">
       <div class="row">
-        <div class="col-4 card px-0" v-for="article in changeStringToObject(selectedUser.articles)" :key="article.pk">
+        <div class="col-4 card px-0" v-for="article in userArticles" :key="article.id">
           <div class="flex-column">
             <div class="video-section">
               <div class="embed-responsive embed-responsive-1by1 rounded">
-                <iframe class="embed-responsive-item" :src="`https://www.youtube.com/embed/${article.fields.video_path}`" allowfullscreen></iframe>
+                <iframe class="embed-responsive-item" :src="`https://www.youtube.com/embed/${article.video_path}`" allowfullscreen></iframe>
               </div>
             </div>
             <div class="d-flex flex-column">
               <div>
-                <i class="far fa-heart mr-2"></i>
-                <i class="far fa-comments"></i>
+                <router-link class="mr-2" :to="`/accounts/${article.user.id}`">{{ article.username }}</router-link>
+                <i v-if="checkLike(article.like_users)" @click="clickLikeArticle(true, article.id)" class="fas fa-heart mr-2 like-btn liked"></i>
+                <i v-else @click="clickLikeArticle(false, article.id)" class="far fa-heart mr-2 like-btn"></i>
               </div>
               <div>
-                {{ article.fields.content }}
+                {{ article.content }}
               </div>
             </div>
           </div>
@@ -63,17 +64,29 @@ export default {
     }
   },
   computed: {
-    ...mapState(['selectedUser'])
+    ...mapState(['myAccount', 'selectedUser', 'userArticles'])
   },
   methods: {
-    ...mapActions(['selectUser', 'followUser']),
+    ...mapActions(['selectUser', 'followUser', 'likeArticle', 'fetchUserArticles']),
     changeStringToObject(S) {
       const O = JSON.parse(S);
       return O
     },
+    checkLike(like_users) {
+      if (Object.values(like_users).includes(this.myAccount.id)) {
+        return true
+      } else {
+        return false
+      }
+    },
+    clickLikeArticle(isArticleLike, article_pk) {
+      const data = {isArticleLike: isArticleLike, article_pk: article_pk, user_id: this.selectedUser.id, where: 'Profile'}
+      this.likeArticle(data)
+    },
   },
   created() {
     this.selectUser(this.userId)
-  }
+    this.fetchUserArticles(this.userId)
+  },
 }
 </script>

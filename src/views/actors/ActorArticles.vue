@@ -9,18 +9,14 @@
         </div>
         <div class="d-flex flex-column">
           <div>
-            <i class="far fa-heart mr-2"></i>
-            <i class="far fa-comments"></i>
+            <router-link class="mr-2" :to="`/accounts/${article.user.id}`">{{ article.username }}</router-link>
+            <i v-if="checkLike(article.like_users)" @click="clickLikeArticle(true, article.id)" class="fas fa-heart mr-2 like-btn liked"></i>
+            <i v-else @click="clickLikeArticle(false, article.id)" class="far fa-heart mr-2 like-btn"></i>
+            <span>{{ article.like_users.length }}명이 좋아합니다.</span>
           </div>
           <div>
             {{ article.content }}
           </div>
-          <ul>
-            <li v-for="comment in changeStringToObject(article.comments)" :key="comment.pk">                  
-              {{ comment.fields['content'] }}
-              <br>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -33,13 +29,24 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'ActorArticles',
   computed: {
-    ...mapState(['actorArticles'])
+    ...mapState(['actorArticles', 'myAccount', 'selectedActor'])
   },
   methods: {
-    ...mapActions(['fetchActorArticles']),
+    ...mapActions(['fetchActorArticles', 'likeArticle']),
     changeStringToObject(S) {
       const O = JSON.parse(S);
       return O
+    },
+    checkLike(like_users) {
+      if (Object.values(like_users).includes(this.myAccount.id)) {
+        return true
+      } else {
+        return false
+      }
+    },
+    clickLikeArticle(isArticleLike, article_pk) {
+      const data = {isArticleLike: isArticleLike, article_pk: article_pk, actor_id: this.selectedActor.id, where: 'ActorProfile'}
+      this.likeArticle(data)
     },
   },
   created() {

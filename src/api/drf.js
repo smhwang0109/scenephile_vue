@@ -11,10 +11,12 @@ export default {
     profile: '/accounts/',
     userSearch: '/accounts/search/',
     follow: '/accounts/follow/',
+    userArticle: '/articles/users/',
     
     // actor
     actorList: '/actors/',
     actorPopularList: '/actors/populars/',
+    actorArticle: '/articles/actors/',
 
     // articles
     articleList: '/articles/',

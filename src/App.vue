@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-dark bg-dark">
       <div class="container">
-        <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;">Scenephile</router-link>
+        <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;"><img :src="`./assets/fanplace_logo2.png`" alt="logo"></router-link>
         <div class="d-none d-lg-inline form-inline offset-1 col-5 col-xl-4">
           <input v-model="keyword" @keyup.enter="getKeyword()" class="form-control mr-sm-2" placeholder="Search">
           <button @click="getKeyword()" class="btn btn-outline-primary my-2 my-sm-0">Search</button>
@@ -45,7 +45,7 @@ export default {
   name: 'App',
   data() {
     return {
-      keyword : null
+      keyword : null,
     }
   },
   computed: {
@@ -55,11 +55,9 @@ export default {
   methods: {
     ...mapActions(['getMyAccount']),
     setNull() {
-      console.log('null')
       this.keyword = null
     },
     getKeyword() {
-      console.log(this.keyword)
       this.$router.push({ name: 'SearchResult', params: { keyword: this.keyword }})
         .then(this.setNull())
     },

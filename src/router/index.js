@@ -8,6 +8,7 @@ import SignupView from '@/views/accounts/SignupView'
 
 // accounts
 import Profile from '@/views/accounts/Profile'
+import SignupActorSelect from '@/views/accounts/SignupActorSelect'
 
 // actors
 import ActorSelect from '@/views/actors/ActorSelect'
@@ -52,6 +53,11 @@ Vue.use(VueRouter)
       path: '/accounts/:user_id',
       name: 'Profile',
       component: Profile
+    },
+    {
+      path: '/signupactorselect',
+      name: 'SignupActorSelect',
+      component: SignupActorSelect
     },
 
     // actors

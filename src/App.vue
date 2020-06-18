@@ -2,8 +2,7 @@
   <div id="app">
     <nav class="navbar navbar-dark bg-color">
       <div class="container">
-        <router-link v-if="isLoggedIn" class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;"><img class="img-fluid" src="./assets/logo.png" alt="logo"></router-link>
-        <router-link v-else class="navbar-brand col-2" :to="{ name: 'Login' }" style="color:white;"><img class="img-fluid" src="./assets/logo.png" alt="logo"></router-link>
+        <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;"><img class="img-fluid" src="./assets/logo.png" alt="logo"></router-link>
         <div v-if="isLoggedIn" class="d-none d-lg-inline form-inline offset-1 col-5 col-xl-4">
           <input v-model="keyword" @keyup.enter="getKeyword()" class="input-color form-control mr-sm-2" placeholder="좋아하는 배우 검색">
           <button @click="getKeyword()" class="btn btn-outline-primary my-2 my-sm-0">검색</button>

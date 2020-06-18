@@ -49,7 +49,7 @@
 import { mapActions } from 'vuex'
 import axios from 'axios'
 
-const API_KEY = 'AIzaSyB5YPuqlraidrM-9Eh42CJ6jTR-rWQmwXQ'
+const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY_SUN
 const API_URL = 'https://www.googleapis.com/youtube/v3/search'
 
 export default {

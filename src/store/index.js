@@ -274,7 +274,7 @@ export default new Vuex.Store({
       axios.get(TMDB.URL + TMDB.ROUTES.actorSearch, {
         params: {
           query: keyword,
-          api_key: process.env.VUE_APP_YOUTUBE_API_KEY_SOOM,
+          api_key: process.env.VUE_APP_THEMOVIEDB_API_KEY_SOOM,
           language: 'ko-KR'
         }
       })
@@ -344,7 +344,7 @@ export default new Vuex.Store({
     selectMovie({ commit }, movie_id) {
       axios.get(TMDB.URL + TMDB.ROUTES.movieDetail + `/${movie_id}`, {
         params: {
-          api_key: process.env.VUE_APP_YOUTUBE_API_KEY_SOOM,
+          api_key: process.env.VUE_APP_THEMOVIEDB_API_KEY_SOOM,
           language: 'ko-KR'
         }
       })
@@ -414,7 +414,7 @@ export default new Vuex.Store({
     searchMovies({ commit }, keyword) {
       axios.get(TMDB.URL + TMDB.ROUTES.movieSearch, {
         params: {
-          api_key: process.env.VUE_APP_YOUTUBE_API_KEY_SOOM,
+          api_key: process.env.VUE_APP_THEMOVIEDB_API_KEY_SOOM,
           language: 'ko-KR',
           query: keyword
         }

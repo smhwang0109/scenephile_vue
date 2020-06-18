@@ -83,7 +83,7 @@ export default {
     ...mapGetters(['config'])
   },
   methods: {
-    ...mapActions(['fetchArticles', 'likeArticle']),
+    ...mapActions(['searchArticles', 'likeArticle']),
     checkLike(like_users) {
       if (Object.values(like_users).includes(this.myAccount.id)) {
         return true
@@ -92,7 +92,7 @@ export default {
       }
     },
     clickLikeArticle(isArticleLike, article_pk) {
-      const data = {isArticleLike: isArticleLike, article_pk: article_pk, selectFeed: this.selectFeed, where: 'ArticleList'}
+      const data = {isArticleLike: isArticleLike, article_pk: article_pk, keyword: this.keyword, where: 'SelectResult'}
       this.likeArticle(data)
     },
     changeStringToObject(S) {
@@ -103,18 +103,19 @@ export default {
       axios.post(SERVER.URL + SERVER.ROUTES.articleList + article_id + '/comments/', this.commentData , this.config)
         .then(() => {
           this.commentData.content = null
-          this.fetchArticles(this.selectFeed)
+          this.searchArticles(this.keyword)
         })
     },
     deleteComment(article_id, comment_pk) {
       axios.delete(SERVER.URL + SERVER.ROUTES.articleList + article_id + '/comments/' + comment_pk, null , this.config)
         .then(() => {
-          this.fetchArticles(this.selectFeed)
+          this.searchArticles(this.keyword)
         })
     }
   },
   created() {
-    this.fetchArticles(this.selectFeed)
+    console.log(this.selectedArticles)
+    this.searchArticles(this.keyword)
   }
 }
 </script>

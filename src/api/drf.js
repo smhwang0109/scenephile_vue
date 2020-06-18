@@ -1,5 +1,5 @@
 export default {
-  URL: 'http://localhost:8000',
+  URL: 'https://fanplace.herokuapp.com',
   ROUTES: {
     // rest-auth
     signup: '/rest-auth/signup/',

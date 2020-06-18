@@ -114,7 +114,7 @@ export default {
     }
   },
   created() {
-    console.log(this.selectedArticles)
+    console.log(this.keyword)
     this.searchArticles(this.keyword)
   }
 }

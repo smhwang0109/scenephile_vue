@@ -60,8 +60,8 @@ export default {
       this.SET_KEYWORD(this.keyword)
       this.searchActors(this.keyword)
       this.searchArticles(this.keyword)
-      this.keyword = null
       this.$router.push({ name: 'SearchResult', params: { keyword: this.keyword}})
+      this.keyword = null
     },
   },
   created() {

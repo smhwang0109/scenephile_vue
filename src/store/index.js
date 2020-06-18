@@ -402,8 +402,8 @@ export default new Vuex.Store({
 
 
     // search
-    searchArticles({ commit }, keyword) {
-      axios.get(SERVER.URL + SERVER.ROUTES.articleSearch + keyword + '/')
+    searchArticles({ getters, commit }, keyword) {
+      axios.get(SERVER.URL + SERVER.ROUTES.articleSearch + keyword + '/', getters.config)
       .then(res => {
           commit('SET_SEARCHED_ARTICLES', res.data)
         })

@@ -128,23 +128,23 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   const pubicPages = ['Login', 'Signup'] // Login 안해도 됨
-//   const authPages = ['Login', 'Signup'] // Login 되어있으면 안됨
-//   const authRequired = !pubicPages.includes(to.name) // 로그인 해야하는 페이지면 true 반환
-//   const unauthRequired = authPages.includes(to.name)
-//   const isLoggedIn = Vue.$cookies.isKey('auth-token')
+router.beforeEach((to, from, next) => {
+  const pubicPages = ['Login', 'Signup'] // Login 안해도 됨
+  const authPages = ['Login', 'Signup'] // Login 되어있으면 안됨
+  const authRequired = !pubicPages.includes(to.name) // 로그인 해야하는 페이지면 true 반환
+  const unauthRequired = authPages.includes(to.name)
+  const isLoggedIn = Vue.$cookies.isKey('auth-token')
 
-//   if (unauthRequired && isLoggedIn){
-//     next('')
-//   }
+  if (unauthRequired && isLoggedIn){
+    next('')
+  }
   
-//   if (authRequired && !isLoggedIn) {
-//     next({ name: 'Login' })
-//   } else {
-//     next()
-//   }
+  if (authRequired && !isLoggedIn) {
+    next({ name: 'Login' })
+  } else {
+    next()
+  }
 
-// })
+})
 
 export default router

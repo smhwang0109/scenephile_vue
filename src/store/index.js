@@ -48,6 +48,36 @@ export default new Vuex.Store({
     config: state => ({ headers: { Authorization: `Token ${state.authToken}`}}),
   },
   mutations: {
+    SET_INIT(state) {
+      // accounts
+      state.myAccount=null,
+      state.selectedUser=null,
+      state.userArticles=null,
+
+      // actors
+      state.actors=null,
+      state.selectedActor=null,
+      state.actorMovies=null,
+      state.actorArticles=null,
+      state.actorLike=null,
+
+      // articles
+      state.articles=null,
+      state.isArticleLike=null,
+
+      // movies
+      state.movies=null,
+      state.selectedMovie=null,
+      state.reviews=null,
+      
+      // search
+      state.keyword=null,
+      state.searchedActors=null,
+      state.searchedArticles=null,
+      state.searchedUsers=null,
+      state.searchedMovies=null
+    },
+
     // rest-auth
     SET_TOKEN(state, token) {
       state.authToken = token
@@ -107,6 +137,10 @@ export default new Vuex.Store({
     },
 
     // search
+    SET_KEYWORD(state, keyword) {
+      console.log(keyword)
+      state.keyword = keyword
+    },
     SET_SEARCHED_ARTICLES(state, articles) {
       state.searchedArticles = articles
     },
@@ -123,7 +157,7 @@ export default new Vuex.Store({
       axios.post(SERVER.URL + info.location, info.data)
         .then(res => {
           commit('SET_TOKEN', res.data.key)
-          router.push({ name: info.to })
+          router.push({ name: info.to, params: { selectFeed:'populars/' }})
         })
         .catch(err => console.log(err.response.data))
     },
@@ -156,7 +190,8 @@ export default new Vuex.Store({
         .then(() => {
           commit('SET_TOKEN', null)
           cookies.remove('auth-token')
-          router.push({ name: 'ArticleList'})
+          commit('SET_INIT')
+          router.push({ name: 'Login'})
         })
         .catch(err => console.log(err.response.data))
     },
@@ -239,7 +274,7 @@ export default new Vuex.Store({
       axios.get(TMDB.URL + TMDB.ROUTES.actorSearch, {
         params: {
           query: keyword,
-          api_key: '3c8bd48509d32d366925172366a3081a',
+          api_key: process.env.VUE_APP_YOUTUBE_API_KEY_SOOM,
           language: 'ko-KR'
         }
       })
@@ -309,7 +344,7 @@ export default new Vuex.Store({
     selectMovie({ commit }, movie_id) {
       axios.get(TMDB.URL + TMDB.ROUTES.movieDetail + `/${movie_id}`, {
         params: {
-          api_key: '3c8bd48509d32d366925172366a3081a',
+          api_key: process.env.VUE_APP_YOUTUBE_API_KEY_SOOM,
           language: 'ko-KR'
         }
       })
@@ -369,7 +404,6 @@ export default new Vuex.Store({
 
     // search
     searchArticles({ commit }, keyword) {
-      console.log(keyword)
       axios.get(SERVER.URL + SERVER.ROUTES.articleSearch + keyword + '/')
       .then(res => {
           commit('SET_SEARCHED_ARTICLES', res.data)
@@ -380,7 +414,7 @@ export default new Vuex.Store({
     searchMovies({ commit }, keyword) {
       axios.get(TMDB.URL + TMDB.ROUTES.movieSearch, {
         params: {
-          api_key: '3c8bd48509d32d366925172366a3081a',
+          api_key: process.env.VUE_APP_YOUTUBE_API_KEY_SOOM,
           language: 'ko-KR',
           query: keyword
         }

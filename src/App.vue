@@ -2,32 +2,30 @@
   <div id="app">
     <nav class="navbar navbar-dark bg-color">
       <div class="container">
-        <router-link class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;"><img class="img-fluid" src="./assets/logo.png" alt="logo"></router-link>
-        <div class="d-none d-lg-inline form-inline offset-1 col-5 col-xl-4">
+        <router-link v-if="isLoggedIn" class="navbar-brand col-2" :to="{ name: 'ArticleList' }" style="color:white;"><img class="img-fluid" src="./assets/logo.png" alt="logo"></router-link>
+        <router-link v-else class="navbar-brand col-2" :to="{ name: 'Login' }" style="color:white;"><img class="img-fluid" src="./assets/logo.png" alt="logo"></router-link>
+        <div v-if="isLoggedIn" class="d-none d-lg-inline form-inline offset-1 col-5 col-xl-4">
           <input v-model="keyword" @keyup.enter="getKeyword()" class="input-color form-control mr-sm-2" placeholder="좋아하는 배우 검색">
           <button @click="getKeyword()" class="btn btn-outline-primary my-2 my-sm-0">검색</button>
         </div>
         <ul class="navbar-nav mt-2 offset-xl-1 col-6 col-lg-3 d-flex felx-row justify-content-around">
-          <li v-if="isLoggedIn" class="d-none">
+          <li v-if="isLoggedIn">
             <router-link :to="{ name: 'Logout' }" class="nav-font">Logout</router-link>
           </li>
-          <li>
-            <router-link :to="{ name: 'ArticleList' }" class="nav-font"><i class="fas fa-home"></i></router-link>
+          <li v-if="isLoggedIn">
+            <router-link :to="{ name: 'ArticleList'}" class="nav-font"><i class="fas fa-home"></i></router-link>
           </li>
-          <li>
-            <router-link :to="{ name: 'ArticlePopular' }" class="nav-font"><i class="fab fa-hotjar"></i></router-link>
+          <li v-if="isLoggedIn">
+            <router-link :to="{ name: 'ArticlePopular'}" class="nav-font"><i class="fab fa-hotjar"></i></router-link>
           </li>
-          <li>
+          <li v-if="isLoggedIn">
             <router-link :to="{ name: 'ActorSelect' }" class="nav-font"><i class="fas fa-plus-circle"></i></router-link>
           </li>
-          <li>
+          <li v-if="isLoggedIn">
             <router-link :to="{ name: 'MovieList' }" class="nav-font"><i class="fas fa-film"></i></router-link>
           </li>
-          <li v-if="myAccount">
-            <router-link :to="`/accounts/${myAccount.id}/`" class="nav-font"><i class="fas fa-user"></i></router-link>
-          </li>
-          <li v-else>
-            <router-link :to="{ name: 'Login' }" class="nav-font"><i class="fas fa-user"></i></router-link>
+          <li v-if="isLoggedIn">
+            <router-link v-if="myAccount" :to="`/accounts/${myAccount.id}/`" class="nav-font"><i class="fas fa-user"></i></router-link>
           </li>
         </ul>
       </div>
@@ -37,7 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   name: 'App',
   data() {
@@ -50,7 +48,8 @@ export default {
     ...mapState(['myAccount']),
   },
   methods: {
-    ...mapActions(['getMyAccount']),
+    ...mapActions(['getMyAccount', 'searchArticles', 'searchActors']),
+    ...mapMutations(['SET_KEYWORD']),
     setNull() {
       this.keyword = null
     },
@@ -58,8 +57,11 @@ export default {
       if (this.keyword === '박') {
         this.keyword = 'park'
       }
-      this.$router.push({ name: 'SearchResult', params: { keyword: this.keyword }})
-        .then(this.setNull())
+      this.SET_KEYWORD(this.keyword)
+      this.searchActors(this.keyword)
+      this.searchArticles(this.keyword)
+      this.keyword = null
+      this.$router.push({ name: 'SearchResult', params: { keyword: this.keyword}})
     },
   },
   created() {
@@ -134,5 +136,10 @@ export default {
 
 a:hover {
   text-decoration: none;
+}
+
+.blank-movie-image {
+  width: 300px;
+  height: 450px;
 }
 </style>

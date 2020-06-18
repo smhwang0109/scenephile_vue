@@ -86,7 +86,7 @@ Vue.use(VueRouter)
 
     // articles
     {
-      path: '/articles',
+      path: '/articles/',
       name: 'ArticleList',
       component: ArticleList
     },
@@ -117,7 +117,8 @@ Vue.use(VueRouter)
     {
       path: '/search/:keyword',
       name: 'SearchResult',
-      component: SearchResult
+      component: SearchResult,
+      props: true
     }
   ]
 

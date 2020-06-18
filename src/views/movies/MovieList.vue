@@ -6,7 +6,8 @@
         <hr>
         <div class="row">
           <router-link :to="{ name: 'MovieDetail', params: {movie_id: movie.id }}" class="card col-lg-4 col-sm-12 px-0 poster-container" v-for="movie in movies" :key="movie.id">
-            <img class="image card-img-top img-fluid rounded" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`" :alt="`${movie.original_title} poster`">
+            <img v-if="movie.poster_path" class="image card-img-top img-fluid rounded" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`" :alt="`${movie.original_title} poster`">
+            <img v-else class="image card-img-top img-fluid rounded" :src="`http://placehold.jp/300x450.png?text=${movie.original_title}`" :alt="`${movie.original_title} poster`">
             <div class="overlay rounded">
               <div class="text">{{ movie.original_title }}</div>
             </div>

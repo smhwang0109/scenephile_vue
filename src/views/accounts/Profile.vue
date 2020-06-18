@@ -31,7 +31,8 @@
       <h5 class="ml-3 mt-2 mb-1"><span>{{ selectedUser.username }}님이 </span>좋아하는 배우</h5>
       <div class="row container justify-content-around mx-1 p-3">
         <router-link :to="`/actors/${actor.pk}/`" class="col-2 px-0 mr-1 profile-container" v-for="actor in changeStringToObject(selectedUser.like_actors)" :key="actor.pk">
-          <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.fields.profile_path}`" :alt="`${actor.fields.name} profile`">
+          <img v-if="actor.fields.profile_path" class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.fields.profile_path}`" :alt="`${actor.fields.name} profile`">
+          <img v-else class="img-fluid rounded-circle image" :src="`http://placehold.jp/300x300.png?text=${actor.fields.name}`" :alt="`${actor.fields.name} profile`">
           <div class="overlay rounded-circle">
             <div class="text">{{ actor.fields.name }}</div>
           </div>

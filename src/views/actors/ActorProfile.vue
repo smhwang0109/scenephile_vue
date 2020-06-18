@@ -2,7 +2,8 @@
   <div v-if="selectedActor">
     <div class="actor-profile row justify-content-around customcard">
       <div class="col-3">
-        <img class="img-fluid rounded-circle p-3" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${selectedActor.profile_path}`" :alt="`${selectedActor.name} profile`">
+        <img v-if="selectedActor.profile_path" class="img-fluid rounded-circle p-3" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${selectedActor.profile_path}`" :alt="`${selectedActor.name} profile`">
+        <img v-else class="img-fluid rounded-circle image" :src="`http://placehold.jp/300x300.png?text=${selectedActor.name}`" :alt="`${selectedActor.name} profile`">
       </div>
       <div class="col-9 p-3 pr-5">
         <div class="d-flex justify-content-between align-items-center">
@@ -14,7 +15,7 @@
           </h3>
         </div>
         <hr>
-        <h5>
+        <h5 v-if="selectedActor.birthday">
           생년월일 : {{ selectedActor.birthday.slice(0,4) }}년 {{ selectedActor.birthday.slice(5,7) }}월 {{ selectedActor.birthday.slice(8,10) }}일
         </h5>
         <h5 class="mt-5 d-inline-block mr-3">

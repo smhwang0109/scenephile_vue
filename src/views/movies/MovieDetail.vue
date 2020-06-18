@@ -1,7 +1,8 @@
 <template>
   <div class="my-3">
    <div class="movie-info row" v-if="selectedMovie">
-     <img class="col-lg-4 col-sm-12 rounded" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${selectedMovie.poster_path}`" :alt="`${selectedMovie.original_title} poster`">
+     <img v-if="selectedMovie.poster_path" class="col-lg-4 col-sm-12 rounded" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${selectedMovie.poster_path}`" :alt="`${selectedMovie.original_title} poster`">
+     <img v-else class="col-lg-4 col-sm-12 rounded" :src="`http://placehold.jp/300x450.png?text=${selectedMovie.original_title}`" :alt="`${selectedMovie.original_title} poster`">
      <div class="col-lg-8 col-sm-12">
        <div>
         <h1>{{ selectedMovie.original_title }}</h1>
@@ -16,7 +17,6 @@
        </div>
        <hr>
        <p>{{ selectedMovie.overview }}</p>
-       
      </div>
    </div>
    <hr>

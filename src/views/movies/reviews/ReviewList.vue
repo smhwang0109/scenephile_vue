@@ -7,8 +7,9 @@
         <div class="card-header" :id="'heading'+review.id">
           <h2 class="mb-0">
             <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" :data-target="'#collapse'+review.id" aria-expanded="false" :aria-controls="'collapse'+review.id">
-              <div class="d-flex justify-content-between align-items-center">
-                <span>{{ review.title }}</span>
+              <div class="d-flex justify-content-start align-items-center">
+                <span>{{ review.title }} | </span>
+                <span class="ml-2 badge badge-pill badge-warning">{{ review.rank }}</span>
               </div>
             </button>
           </h2>
@@ -27,8 +28,8 @@
                   </p>                  
                 </div>
                 <div>
-                  <button @click="initUpdate(review)" type="button" class="btn btn-sm btn-outline-info mb-2" data-toggle="modal" :data-target="'#update_review'+review.id">수정</button>              
-                  <button @click="deleteR(review.id)" type="button" class="btn btn-sm btn-outline-danger mb-2 ml-2">삭제</button>
+                  <button v-if="myAccount.id === review.user.id" @click="initUpdate(review)" type="button" class="btn btn-sm btn-outline-info mb-2" data-toggle="modal" :data-target="'#update_review'+review.id">수정</button>              
+                  <button v-if="myAccount.id === review.user.id" @click="deleteR(review.id)" type="button" class="btn btn-sm btn-outline-danger mb-2 ml-2">삭제</button>
                   
                   <!-- update modal -->
                   <div class="modal fade" :id="'update_review'+review.id" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -77,7 +78,7 @@
                 <div>
                   <router-link :to="`/accounts/${comment.fields.user }`"><span>{{ comment.fields.username }}</span></router-link> |
                   <span>{{ comment.fields.created_at.slice(0,10) }} | </span>
-                  <button @click="deleteRC(review.id, Number(comment.pk))" type="button" class="btn btn-sm btn-outline-danger mb-2">Delete</button>
+                  <button v-if="myAccount.id === comment.fields.user " @click="deleteRC(review.id, Number(comment.pk))" type="button" class="btn btn-sm btn-outline-danger mb-2">댓글 삭제</button>
                 </div>
               </div>
             </div>
@@ -114,7 +115,7 @@ export default {
     ReviewCommentCreate
   },
   computed : {
-    ...mapState(['reviews'])
+    ...mapState(['reviews', 'myAccount'])
   },
   methods: {
     ...mapActions(['updateReview', 'deleteReview', 'deleteReviewComment']),

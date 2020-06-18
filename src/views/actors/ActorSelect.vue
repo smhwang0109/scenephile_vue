@@ -6,7 +6,8 @@
     <hr>
     <div class="row customcard p-3 justify-content-around">
       <router-link :to="{ name: 'ArticleCreate', params:{ actor_id: actor.id, actor: actor } }" class="col-2 px-0 mx-2 profile-container" v-for="actor in actors" :key="actor.id">
-        <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
+        <img v-if="actor.profile_path" class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
+        <img v-else class="img-fluid rounded-circle image" :src="`http://placehold.jp/300x300.png?text=${actor.name}`" :alt="`${actor.name} profile`">
         <div class="overlay rounded-circle">
           <div class="text">{{ actor.name }}</div>
         </div>

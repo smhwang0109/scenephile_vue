@@ -5,7 +5,7 @@
     </div>
     <hr>
     <div class="row customcard p-3 d-flex justify-content-around">
-      <div @click="pushActor(actor)" class="col-2 px-0 mr-1 profile-container" v-for="actor in actors.slice(0, 20)" :key="actor.id">
+      <div @click="pushActor(actor)" class="col-2 px-0 mb-3 mr-1 profile-container" v-for="actor in actors.slice(0, 20)" :key="actor.id">
         <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
         <div v-show="isChecked(actor)" class="overlay-default rounded-circle">
           <div class="text"><i class="fas fa-check"></i></div>
@@ -107,7 +107,7 @@ export default {
   height: 100%;
   width: 100%;
   opacity: 0;
-  transition: .5s ease;
+  transition: .2s ease;
   background-color: #3e3f3f;
 }
 

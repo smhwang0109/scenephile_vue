@@ -2,38 +2,50 @@
   <div class="my-3">
     <div class="article-feed row justify-content-around">
       <div class="col-8">
-        <ActorSearch :keyword="keyword"/>
+        <ActorSearch/>
         <hr>
         <div class="row">
           <div class="col-12 card px-0" v-for="article in searchedArticles" :key="article.id">
-            <div class="customcard flex-column">
-              <div class="customcard justify-content-between py-2">
-                <div>
-                  {{ article.user.username }}
+            <div class="flex-column">
+              <div class="py-2 customcard justify-content-between">
+                <div class="d-flex flex-row justify-content-start">
+                  <img class="img-fluid rounded-circle ml-1 border user-image" src="@/assets/anonymoususer.png" :alt="`${article.user.username} profile`">
+                  <div class="d-flex justify-content-start align-items-center ml-2">
+                    <router-link :to="`/accounts/${article.user.id }`"><span> {{ article.user.username }}</span></router-link>
+                    <span class="ml-2">| {{ article.actor.name }}</span>
+                  </div>
                 </div>
                 <div>
                   :
                 </div>
               </div>
-              <div class="customcard video-section">
+              <div class="video-section">
                 <div class="embed-responsive embed-responsive-1by1">
                   <iframe class="embed-responsive-item" :src="`https://www.youtube.com/embed/${article.video_path}`" allowfullscreen></iframe>
                 </div>
               </div>
               <div class="customcard d-flex flex-column">
-                <div>
-                  <i class="far fa-heart mr-2"></i>
-                  <i class="far fa-comments"></i>
+                <div class="border-bottom pb-2">
+                  <i v-if="checkLike(article.like_users)" @click="clickLikeArticle(true, article.id)" class="fas fa-heart mr-2 like-btn liked"></i>
+                  <i v-else @click="clickLikeArticle(false, article.id)" class="far fa-heart mr-2 like-btn"></i>
+                  <span>{{ article.like_users.length }}명이 좋아합니다.</span>
                 </div>
-                <div>
+                <div class="border-bottom mt-2 pb-2">
                   {{ article.content }}
                 </div>
                 <ul>
+                  <i class="far fa-comments"></i>
                   <li v-for="comment in changeStringToObject(article.comments)" :key="comment.pk">                  
-                    {{ comment.fields['content'] }}
+                    <router-link :to="`/accounts/${article.user.id }`">{{ comment.fields['username'] }}</router-link> {{ comment.fields['content'] }} 
+                    <i v-if="myAccount.id === comment.fields.user" @click="deleteComment(article.id, comment.pk)" class="delete-btn far fa-trash-alt"></i>
                     <br>
                   </li>
                 </ul>
+                <hr>
+                <div class="row">
+                  <input @keypress.enter="createComment(article.id)" v-model="commentData.content" class="form-control offset-1 col-8 mr-2" type="text" placeholder="댓글을 작성해주세요.">
+                  <button @click="createComment(article.id)" type="submit" class="mb-3 col-2 btn btn-outline-primary">댓글 작성</button>
+                </div>
               </div>
             </div>
           </div>
@@ -45,7 +57,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
+import axios from 'axios'
+
+import SERVER from '@/api/drf'
 
 import ActorSearch from '@/components/ActorSearch'
 import UserSearch from '@/components/UserSearch'
@@ -54,7 +69,9 @@ export default {
   name: 'SearchResult',
   data() {
     return {
-      keyword: this.$route.params.keyword
+      commentData: {
+        content: null
+      }
     }
   },
   components: {
@@ -62,29 +79,60 @@ export default {
     UserSearch,
   },
   computed: {
-    ...mapState(['searchedArticles']),    
+    ...mapState(['myAccount', 'articles', 'isArticleLike', 'searchedArticles', 'keyword']),
+    ...mapGetters(['config'])
   },
   methods: {
-    ...mapActions(['searchArticles']),
+    ...mapActions(['fetchArticles', 'likeArticle']),
+    checkLike(like_users) {
+      if (Object.values(like_users).includes(this.myAccount.id)) {
+        return true
+      } else {
+        return false
+      }
+    },
+    clickLikeArticle(isArticleLike, article_pk) {
+      const data = {isArticleLike: isArticleLike, article_pk: article_pk, selectFeed: this.selectFeed, where: 'ArticleList'}
+      this.likeArticle(data)
+    },
     changeStringToObject(S) {
       const O = JSON.parse(S);
       return O
     },
-    setKeyword() {
-      this.keyword = this.$route.params.keyword
+    createComment(article_id) {
+      axios.post(SERVER.URL + SERVER.ROUTES.articleList + article_id + '/comments/', this.commentData , this.config)
+        .then(() => {
+          this.commentData.content = null
+          this.fetchArticles(this.selectFeed)
+        })
+    },
+    deleteComment(article_id, comment_pk) {
+      axios.delete(SERVER.URL + SERVER.ROUTES.articleList + article_id + '/comments/' + comment_pk, null , this.config)
+        .then(() => {
+          this.fetchArticles(this.selectFeed)
+        })
     }
   },
   created() {
-    this.searchArticles(this.keyword)
-  },
-  updated() {
-    this.setKeyword()
-    this.searchArticles(this.keyword)
+    this.fetchArticles(this.selectFeed)
   }
-
 }
 </script>
 
 <style>
+li {
+  list-style: none;
+}
 
+.like-btn, .delete-btn:hover {
+  cursor: pointer;
+}
+
+.liked {
+  color: red;
+}
+
+.border-bottom {
+  border-bottom: 1px solid gainsboro;
+}
 </style>

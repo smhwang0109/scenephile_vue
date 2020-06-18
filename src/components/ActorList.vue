@@ -4,7 +4,8 @@
     <h5 v-else-if="this.$route.path==='/articles/popular'" class="col-12 my-3">{{ myAccount.username }} 님이 좋아할만한 현재 인기있는 배우들입니다 :)</h5>
     <h5 v-else class="col-12 my-3">{{ myAccount.username }} 님이 좋아하는 배우가 나오는 영화를 추천해드립니다 :)</h5>
     <router-link :to="{ name: 'ActorProfile', params: { actor_id: actor.id }}" class="col-2 px-0 m-1 profile-container" v-for="actor in actors.slice(0,10)" :key="actor.id">
-      <img class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
+      <img v-if="actor.profile_path" class="img-fluid rounded-circle image" :src="`https://image.tmdb.org/t/p/w300_and_h300_bestv2/${actor.profile_path}`" :alt="`${actor.name} profile`">
+      <img v-else class="img-fluid rounded-circle image" :src="`http://placehold.jp/300x300.png?text=${actor.name}`" :alt="`${actor.name} profile`">
       <div class="overlay rounded-circle">
         <div class="text">{{ actor.name }}</div>
       </div>

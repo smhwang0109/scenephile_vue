@@ -1,6 +1,18 @@
 <template>
   <div class="my-3">
     <div class="article-feed row justify-content-around">
+      <div class="col-4 search-bar">
+        <input v-model="inputValue" @keypress.enter="fetchVideos" class="w-100 customcard" placeholder="영상을 검색해보세요" autofocus>
+        <hr>
+        <div @click="setVideoPath(video)" class="select-video d-flex border p-2" v-for="video in videos" :key="video.etag">
+          <div class="col-6 embed-responsive embed-responsive-16by9 customcard">
+            <iframe class="embed-responsive-item" :src="`https://www.youtube.com/embed/${video.id.videoId}`" allowfullscreen></iframe>
+          </div>
+          <div class="col-6">
+            <p>{{ video.snippet.title }}</p>
+          </div>
+        </div>
+      </div>
       <div class="col-8">
         <div class="customcard">
           <div class="row">
@@ -28,19 +40,7 @@
             <button type="submit" class="btn btn-primary" @click="createArticle(articleData)">게시하기</button>
           </div>
         </div>
-      </div>
-      <div class="col-4 search-bar">
-        <input v-model="inputValue" @keypress.enter="fetchVideos" class="w-100 customcard" placeholder="영상을 검색해보세요">
-        <hr>
-        <div @click="setVideoPath(video)" class="select-video d-flex border p-2" v-for="video in videos" :key="video.etag">
-          <div class="col-6 embed-responsive embed-responsive-16by9 customcard">
-            <iframe class="embed-responsive-item" :src="`https://www.youtube.com/embed/${video.id.videoId}`" allowfullscreen></iframe>
-          </div>
-          <div class="col-6">
-            <p>{{ video.snippet.title }}</p>
-          </div>
-        </div>
-      </div>
+      </div>      
     </div>
   </div>
 </template>

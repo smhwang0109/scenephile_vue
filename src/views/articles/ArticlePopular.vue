@@ -37,7 +37,7 @@
                   <i class="far fa-comments"></i>
                   <li v-for="comment in changeStringToObject(article.comments)" :key="comment.pk">                  
                     <router-link :to="`/accounts/${article.user.id }`">{{ comment.fields['username'] }}</router-link> {{ comment.fields['content'] }} 
-                    <i @click="deleteComment(article.id, comment.pk)" class="delete-btn far fa-trash-alt"></i>
+                    <i v-if="myAccount.id === comment.fields.user" @click="deleteComment(article.id, comment.pk)" class="delete-btn far fa-trash-alt"></i>
                     <br>
                   </li>
                 </ul>

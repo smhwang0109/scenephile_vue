@@ -7,7 +7,7 @@
     </div>
     <div class="form-group">
       <label for="password">비밀번호</label>
-      <input class="form-control" v-model="loginData.password" id="password" type="password">
+      <input @keyup.enter="login(loginData)" class="form-control" v-model="loginData.password" id="password" type="password">
     </div>
     <button @click="login(loginData)" class="btn btn-primary mr-3">로그인</button>
     <button @click="toSignup" class="btn btn-primary">회원가입</button>

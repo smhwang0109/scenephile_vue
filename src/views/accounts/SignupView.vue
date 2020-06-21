@@ -11,7 +11,7 @@
     </div>
     <div class="form-group">
       <label for="password2">비밀번호 확인</label>
-      <input class="form-control" v-model="signupData.password2" id="password2" type="password">
+      <input @keyup.enter="signup(signupData)" class="form-control" v-model="signupData.password2" id="password2" type="password">
     </div>
     <div @click="signup(signupData)" class="btn btn-primary">회원가입</div>
   </div>

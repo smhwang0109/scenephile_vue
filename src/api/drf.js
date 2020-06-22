@@ -1,5 +1,5 @@
 export default {
-  URL: 'https://fanplace.herokuapp.com',
+  URL: 'http://ec2-54-180-100-73.ap-northeast-2.compute.amazonaws.com',
   // URL: 'http://localhost:8000',
   ROUTES: {
     // rest-auth
